@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Георгий Гусаков](https://up.htmlacademy.ru/ecmascript/4/user/106211).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Яшин](https://htmlacademy.ru/profile/id213763).
 
 ---
 
