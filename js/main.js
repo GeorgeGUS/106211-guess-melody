@@ -18,12 +18,10 @@ let startScreen = 0;
 const showScreen = (arr, i) => {
   if (i < arr.length) {
     const mainScreen = document.querySelector(`.app .main`);
-    const newScreen = arr[i];
+    const newScreen = arr[i].cloneNode(true);
 
-    if (mainScreen !== newScreen) {
-      // Заменяет текущий экран выбранным
-      mainScreen.parentNode.replaceChild(newScreen, mainScreen);
-    }
+    // Заменяет текущий экран выбранным
+    mainScreen.parentNode.replaceChild(newScreen, mainScreen);
   }
 };
 
@@ -39,8 +37,10 @@ const toggleScreens = (arr, step) => {
   startScreen += step;
   if (startScreen < 0) {
     startScreen = 0;
+    return;
   } else if (startScreen >= arr.length) {
     startScreen = arr.length - 1;
+    return;
   }
   showScreen(screens, startScreen);
 };
