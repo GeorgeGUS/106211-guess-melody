@@ -42,14 +42,13 @@ showScreen(screens, startScreen);
  * Переключает экраны
  * @param {array} arr - Массив экранов
  * @param {number} step - Шаг и направление переключения
- * @param {boolean} [round=false] - Переключение линейное либо круговое
  */
-const toggleScreens = (arr, step, round = false) => {
+const toggleScreens = (arr, step) => {
   startScreen += step;
   if (startScreen < 0) {
-    startScreen = round ? arr.length - 1 : 0;
+    startScreen = 0;
   } else if (startScreen >= arr.length) {
-    startScreen = round ? 0 : arr.length - 1;
+    startScreen = arr.length - 1;
   }
   showScreen(screens, startScreen);
 };
