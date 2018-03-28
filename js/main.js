@@ -1,15 +1,7 @@
 /** Список кодовых номеров клавиш */
 const KeyNumber = {
-  ALT: 18,
   LEFT_ARROW: 37,
   RIGHT_ARROW: 39
-};
-
-/** Хранилище состояний нажатия клавиш */
-const keyState = {
-  18: false,
-  37: false,
-  39: false
 };
 
 const template = document.querySelector(`#templates`);
@@ -35,7 +27,7 @@ const showScreen = (arr, i) => {
   }
 };
 
-// Покажем приветственный экран
+// Покажем при первом запуске приветственный экран
 showScreen(screens, startScreen);
 
 /**
@@ -58,25 +50,11 @@ const toggleScreens = (arr, step) => {
  * @param {Event} evt - событие нажатия клавиши
  */
 const onKeyDown = (evt) => {
-  if (evt.keyCode in keyState) {
-    keyState[evt.keyCode] = true;
-    if (keyState[KeyNumber.LEFT_ARROW] && keyState[KeyNumber.ALT]) {
-      toggleScreens(screens, -1);
-    } else if (keyState[KeyNumber.RIGHT_ARROW] && keyState[KeyNumber.ALT]) {
-      toggleScreens(screens, 1);
-    }
-  }
-};
-
-/**
- * Обработчик отпускания клавиш
- * @param {Event} evt - событие отпускания клавиши
- */
-const onKeyUp = (evt) => {
-  if (evt.keyCode in keyState) {
-    keyState[evt.keyCode] = false;
+  if (evt.altKey && evt.keyCode === KeyNumber.LEFT_ARROW) {
+    toggleScreens(screens, -1);
+  } else if (evt.altKey && evt.keyCode === KeyNumber.RIGHT_ARROW) {
+    toggleScreens(screens, 1);
   }
 };
 
 document.addEventListener(`keydown`, onKeyDown);
-document.addEventListener(`keyup`, onKeyUp);
