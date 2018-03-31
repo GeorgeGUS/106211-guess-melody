@@ -1,5 +1,5 @@
-import {createElementFromString} from './create-element';
-import showScreen from "./show-screen";
+import {createElementFromString} from '../create-element';
+import showScreen from "../show-screen";
 import genre from "./screen-level-genre";
 
 const levelArtist = `
@@ -8,7 +8,7 @@ const levelArtist = `
       <circle
         cx="390" cy="390" r="370"
         class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+        style="filter: url(..#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
       <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
         <span class="timer-value-mins">05</span><!--
@@ -63,13 +63,13 @@ const levelArtist = `
     </div>
   </section>`;
 
-const element = createElementFromString(levelArtist);
+const artist = createElementFromString(levelArtist);
 
-const artistBtns = element.querySelectorAll(`.main-answer`);
+const artistBtns = artist.querySelectorAll(`.main-answer`);
 
 Array.from(artistBtns).forEach((btn) => btn.addEventListener(`click`, (evt) => {
   evt.preventDefault();
   showScreen(genre);
 }));
 
-export default element;
+export default artist;

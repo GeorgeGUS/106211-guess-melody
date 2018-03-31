@@ -1,5 +1,6 @@
-import {createElementFromString} from './create-element';
-import showScreen from "./show-screen";
+import {createElementFromString} from '../create-element';
+import showScreen from "../show-screen";
+import welcome from './screen-welcome';
 
 const resultWin = `
   <section class="main main--result">
@@ -14,5 +15,10 @@ const resultWin = `
   </section>`;
 
 const element = createElementFromString(resultWin);
+
+element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  showScreen(welcome);
+});
 
 export default element;

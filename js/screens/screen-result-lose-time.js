@@ -1,5 +1,6 @@
-import {createElementFromString} from './create-element';
-import showScreen from "./show-screen";
+import {createElementFromString} from '../create-element';
+import showScreen from "../show-screen";
+import welcome from './screen-welcome';
 
 const resultLoseTime = `
   <section class="main main--result">
@@ -11,5 +12,10 @@ const resultLoseTime = `
   </section>`;
 
 const element = createElementFromString(resultLoseTime);
+
+element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  showScreen(welcome);
+});
 
 export default element;

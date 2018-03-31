@@ -1,5 +1,5 @@
-import {createElementFromString} from './create-element';
-import showScreen from "./show-screen";
+import {createElementFromString} from '../create-element';
+import showScreen from "../show-screen";
 import artist from "./screen-level-artist";
 
 const welcome = `
@@ -16,9 +16,7 @@ const welcome = `
 
 const element = createElementFromString(welcome);
 
-const playBtn = element.querySelector(`.main-play`);
-
-playBtn.addEventListener(`click`, (evt) => {
+element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
   showScreen(artist);
 });

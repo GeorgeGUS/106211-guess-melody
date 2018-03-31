@@ -1,5 +1,10 @@
-import {createElementFromString} from './create-element';
-import showScreen from "./show-screen";
+import {createElementFromString} from '../create-element';
+import showScreen from "../show-screen";
+import win from "./screen-result-win";
+import loseTime from "./screen-result-lose-time";
+import loseAttempts from "./screen-result-lose-attempts";
+
+const resultScreens = [win, loseTime, loseAttempts];
 
 const levelGenre = `
   <section class="main main--level main--level-genre">
@@ -7,7 +12,7 @@ const levelGenre = `
       <circle
         cx="390" cy="390" r="370"
         class="timer-line"
-        style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+        style="filter: url(..#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
       <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
         <span class="timer-value-mins">05</span><!--
@@ -86,5 +91,33 @@ const levelGenre = `
   </section>`;
 
 const element = createElementFromString(levelGenre);
+const playerControls = element.querySelectorAll(`.player-control`);
+const answers = element.querySelectorAll(`input[name="answer"]`);
+const sendBtn = element.querySelector(`.genre-answer-send`);
+
+// Кнопки отправки по умолчанию отключена
+sendBtn.disabled = true;
+
+Array.from(playerControls).forEach((btn) => btn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+}));
+
+Array.from(answers).forEach((input) => input.addEventListener(`change`, (evt) => {
+  evt.preventDefault();
+  // Кнопки отправки отключена, пока не выбран хоть один ответ
+  sendBtn.disabled = !Array.from(answers).some((answer) => answer.checked);
+}));
+
+sendBtn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  // Результат определяется случайно
+  const result = resultScreens[Math.floor(Math.random() * resultScreens.length)];
+  showScreen(result);
+
+  // Сброс всех выбранных ответов
+  Array.from(answers).forEach((answer) => {
+    answer.checked = false;
+  });
+});
 
 export default element;
