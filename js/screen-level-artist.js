@@ -1,6 +1,8 @@
-import createElementFromString from 'create-element';
+import {createElementFromString} from './create-element';
+import showScreen from "./show-screen";
+import genre from "./screen-level-genre";
 
-const levelArtist = createElementFromString(`
+const levelArtist = `
   <section class="main main--level main--level-artist">
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
       <circle
@@ -59,7 +61,15 @@ const levelArtist = createElementFromString(`
         </div>
       </form>
     </div>
-  </section>
-`);
+  </section>`;
 
-export default levelArtist;
+const element = createElementFromString(levelArtist);
+
+const artistBtns = element.querySelectorAll(`.main-answer`);
+
+Array.from(artistBtns).forEach((btn) => btn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  showScreen(genre);
+}));
+
+export default element;

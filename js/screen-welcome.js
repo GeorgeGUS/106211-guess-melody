@@ -1,6 +1,8 @@
-import createElementFromString from 'create-element';
+import {createElementFromString} from './create-element';
+import showScreen from "./show-screen";
+import artist from "./screen-level-artist";
 
-const welcome = createElementFromString(`
+const welcome = `
   <section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
     <button class="main-play">Начать игру</button>
@@ -10,7 +12,15 @@ const welcome = createElementFromString(`
       Ошибиться можно 3 раза.<br>
       Удачи!
     </p>
-  </section>
-`);
+  </section>`;
 
-export default welcome;
+const element = createElementFromString(welcome);
+
+const playBtn = element.querySelector(`.main-play`);
+
+playBtn.addEventListener(`click`, (evt) => {
+  evt.preventDefault();
+  showScreen(artist);
+});
+
+export default element;

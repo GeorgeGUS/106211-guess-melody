@@ -1,6 +1,7 @@
-import createElementFromString from 'create-element';
+import {createElementFromString} from './create-element';
+import showScreen from "./show-screen";
 
-const resultWin = createElementFromString(`
+const resultWin = `
   <section class="main main--result">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
 
@@ -10,7 +11,8 @@ const resultWin = createElementFromString(`
       <br>совершив 3 ошибки</div>
     <span class="main-comparison">Вы заняли 2 место из 10. Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков</span>
     <span role="button" tabindex="0" class="main-replay">Сыграть ещё раз</span>
-  </section>
-`);
+  </section>`;
 
-export default resultWin;
+const element = createElementFromString(resultWin);
+
+export default element;
