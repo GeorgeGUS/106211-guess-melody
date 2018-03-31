@@ -95,8 +95,20 @@ const playerControls = element.querySelectorAll(`.player-control`);
 const answers = element.querySelectorAll(`input[name="answer"]`);
 const sendBtn = element.querySelector(`.genre-answer-send`);
 
-// Кнопки отправки по умолчанию отключена
-sendBtn.disabled = true;
+/*
+* Сброс состояния уровня
+*/
+const resetLevel = () => {
+  // Кнопки отправки по умолчанию отключена
+  sendBtn.disabled = true;
+
+  // Сброс всех выбранных ответов
+  Array.from(answers).forEach((answer) => {
+    answer.checked = false;
+  });
+};
+
+resetLevel();
 
 Array.from(playerControls).forEach((btn) => btn.addEventListener(`click`, (evt) => {
   evt.preventDefault();
@@ -113,11 +125,7 @@ sendBtn.addEventListener(`click`, (evt) => {
   // Результат определяется случайно
   const result = resultScreens[Math.floor(Math.random() * resultScreens.length)];
   showScreen(result);
-
-  // Сброс всех выбранных ответов
-  Array.from(answers).forEach((answer) => {
-    answer.checked = false;
-  });
+  resetLevel();
 });
 
 export default element;
