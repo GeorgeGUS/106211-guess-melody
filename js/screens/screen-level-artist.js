@@ -63,13 +63,12 @@ const levelArtist = `
     </div>
   </section>`;
 
-const artist = createElementFromString(levelArtist);
+const element = createElementFromString(levelArtist);
+const answers = element.querySelectorAll(`input[name="answer"]`);
 
-const artistBtns = artist.querySelectorAll(`.main-answer`);
-
-Array.from(artistBtns).forEach((btn) => btn.addEventListener(`click`, (evt) => {
+Array.from(answers).forEach((input) => input.addEventListener(`change`, (evt) => {
   evt.preventDefault();
   showScreen(genre);
 }));
 
-export default artist;
+export default element;
