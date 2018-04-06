@@ -13,7 +13,6 @@ describe(`Checking the scoring`, () => {
       {success: true, time: 30},
       {success: true, time: 30},
       {success: true, time: 30},
-      {success: true, time: 30},
       {success: true, time: 30}
     ], 3), 10);
   });
@@ -28,13 +27,36 @@ describe(`Checking the scoring`, () => {
       {success: true, time: 25},
       {success: true, time: 26},
       {success: true, time: 27},
-      {success: true, time: 28},
-      {success: true, time: 29}
+      {success: true, time: 28}
     ], 3), 20);
+    assert.equal(calcScoring([
+      {success: true, time: 1},
+      {success: true, time: 2},
+      {success: true, time: 5},
+      {success: true, time: 30},
+      {success: true, time: 15},
+      {success: true, time: 20},
+      {success: true, time: 45},
+      {success: true, time: 26},
+      {success: true, time: 27},
+      {success: true, time: 28}
+    ], 3), 18);
   });
 
-  it(`should return right points if the answers are less than 10`, () => {
+  it(`should return right points if the answers are less than questions`, () => {
+    assert.equal(calcScoring([], 3), -1);
     assert.equal(calcScoring([{success: true, time: 1}], 3), -1);
+    assert.equal(calcScoring([
+      {success: true, time: 1},
+      {success: true, time: 2},
+      {success: true, time: 3},
+      {success: true, time: 4},
+      {success: true, time: 5},
+      {success: true, time: 6},
+      {success: true, time: 7},
+      {success: true, time: 8},
+      {success: true, time: 9}
+    ], 3), -1);
   });
   it(`should return right points if if all attempts are over`, () => {
     assert.equal(calcScoring([
@@ -44,7 +66,7 @@ describe(`Checking the scoring`, () => {
     ], 0), -1);
   });
 
-  // it(`should check that wrong answers are equal to rest notes`, () => {
-  //   assert.throws(() => calcScoring([false, false, false], 3), /Wrong answers should be equal to rest notes/);
-  // });
+  it(`should check that wrong answers match the rest notes`, () => {
+    assert.throws(() => calcScoring([false, false, false], 3), /Wrong answers don't match the rest of the notes/);
+  });
 });
