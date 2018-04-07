@@ -50,9 +50,9 @@ gulp.task('scripts', function () {
 gulp.task('test', function () {
   return gulp.src(['js/**/*.test.js'], {read: false})
     .pipe(mocha({
-      compilers: ['js:babel-register'],
-      reporter: 'spec' // Вид, в котором я хочу отображать результаты тестирования
-    }))
+      require: ['babel-register'],
+      reporter: 'spec'
+    }));
 });
 
 gulp.task('imagemin', ['copy'], function () {
