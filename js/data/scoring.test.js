@@ -2,7 +2,11 @@ import {assert} from 'chai';
 import {calcScoring} from './scoring';
 
 describe(`Checking the scoring`, () => {
-  it(`should return right points for all correct answers`, () => {
+  it(`Should return number`, () => {
+    assert.typeOf(calcScoring([], 3), `number`);
+  });
+
+  it(`should return right points for correct answers`, () => {
     assert.equal(calcScoring([
       {success: true, time: 30},
       {success: true, time: 30},
@@ -16,7 +20,7 @@ describe(`Checking the scoring`, () => {
       {success: true, time: 30}
     ], 3), 10);
   });
-  it(`should return right points for all correct and fast answers`, () => {
+  it(`should return right points for correct and fast answers`, () => {
     assert.equal(calcScoring([
       {success: true, time: 1},
       {success: true, time: 2},
@@ -58,7 +62,7 @@ describe(`Checking the scoring`, () => {
       {success: true, time: 9}
     ], 3), -1);
   });
-  it(`should return right points if if all attempts are over`, () => {
+  it(`should return right points if all attempts are over`, () => {
     assert.equal(calcScoring([
       {success: false, time: 1},
       {success: false, time: 2},
