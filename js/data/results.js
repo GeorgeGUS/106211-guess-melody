@@ -1,32 +1,40 @@
 /*
- * Вывод результатов игрока
+ * Получение результов игрока
+ * @param {Array} allUserResults - Массив результатов игр других игроков
+ * @param {number} points - количество заработанных очков
+ * @return {Array} - Массив с результами игрока
+ */
+export const getResults = (allUserResults, points) => {
+  const stats = [...allUserResults];
+  stats.push(points);
+  stats.sort((a, b) => a - b);
+
+  const userCount = stats.length;
+  const userPosition = userCount - stats.indexOf(points);
+  const userPercent = Math.round((userCount - userPosition) / userCount * 100);
+
+  return [userPosition, userCount, userPercent];
+};
+
+/*
+ * Вывод сообщения с результами игрока
  * @param {Array} allUserResults - Массив результатов игр других игроков
  * @param {Object} userResult - Объект результата игрока
  * @param {number} userResult.points - количество заработанных очков
  * @param {number} userResult.restNotes - оставшееся количество попыток
  * @param {number} userResult.restTime - оставшееся количество времени
- * @return {string} message - Сообщение о результате игрока
+ * @return {string} - Сообщение о результате игрока
  */
 export const printResults = (allUserResults, userResult) => {
-  let message = ``;
-  if (userResult.restTime === 0) {
-    message = `Время вышло! Вы не успели отгадать все мелодии.`;
-  } else if (userResult.restNotes === 0) {
-    message = `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
-  } else {
-    // результат игрока добавляется в список результатов и список сортируется по убыванию
-    let stats = allUserResults;
-    stats.push(userResult.points);
-    stats.sort((a, b) => a - b);
-    let userCount = stats.length;
-    // определяется позиция результата игрока в списке
-    let userPosition = userCount - stats.indexOf(userResult.points);
-    // определяется процент игроков, которых вы обошли
-    let userPercent = (userCount - userPosition) / userCount * 100;
-
-    message = `Вы заняли ${userPosition}-ое место из ${userCount}. Это лучше чем у ${userPercent}% игроков.`;
+  if (userResult.restNotes === 0) {
+    return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
   }
 
-  return message;
-};
+  if (userResult.restTime === 0) {
+    return `Время вышло! Вы не успели отгадать все мелодии.`;
+  }
 
+  const [position, total, percent] = getResults(allUserResults, userResult.points);
+
+  return `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`;
+};
