@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {assert} from 'chai';
 import Timer from './timer';
 
@@ -6,14 +7,13 @@ describe(`Creating timer`, () => {
     assert.isObject(new Timer());
   });
   it(`should return right time on tick call`, () => {
-    let timer = new Timer(300);
+    const timer = new Timer(300);
     assert.equal(timer.tick(), 299);
     assert.equal(timer.tick(), 298);
-    timer.reset();
-    assert.equal(timer.tick(), 299);
     assert.equal(new Timer(1).tick(), 0);
   });
-  it(`should return right answer on end of time`, () => {
-    assert.equal(new Timer(0).tick(), `Время вышло!`);
+  it(`should return null and call function on end of time`, () => {
+    const timer = new Timer(0, null, () => console.log(`Время вышло!`));
+    assert.equal(timer.tick(), null);
   });
 });

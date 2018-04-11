@@ -4,21 +4,36 @@
  * @return {Object} - Объект таймера
  */
 export default class Timer {
-  constructor(timeInSeconds) {
+  constructor(timeInSeconds, onTick, onEnd) {
     this.startTime = timeInSeconds;
-    this.mutableTime = this.startTime;
+    this.time = this.startTime;
+    if (onEnd && typeof onEnd === `function`) {
+      this.onTick = onTick;
+    }
+    if (onEnd && typeof onEnd === `function`) {
+      this.onEnd = onEnd;
+    }
   }
 
-  reset() {
-    this.mutableTime = this.startTime;
+  start() {
+    clearInterval(this.interval);
+    this.time = this.startTime;
+    this.interval = setInterval(() => this.tick(), 1000);
   }
 
-  end() {
-    return `Время вышло!`;
+  stop() {
+    clearInterval(this.interval);
+    if (this.onEnd) {
+      this.onEnd();
+    }
+    return null;
   }
 
   tick() {
-    let isTimeEnd = this.mutableTime > 0;
-    return isTimeEnd ? --this.mutableTime : this.end();
+    this.time--;
+    if (this.onTick) {
+      this.onTick(this.time);
+    }
+    return this.time >= 0 ? this.time : this.stop();
   }
 }
