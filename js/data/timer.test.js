@@ -12,8 +12,20 @@ describe(`Creating timer`, () => {
     assert.equal(timer.tick(), 298);
     assert.equal(new Timer(1).tick(), 0);
   });
-  it(`should return null and call function on end of time`, () => {
-    const timer = new Timer(0, null, () => console.log(`Время вышло!`));
-    assert.equal(timer.tick(), null);
+  it(`should return null on end of time`, () => {
+    assert.equal(new Timer(0).tick(), null);
+  });
+  it(`should call function on end of time`, () => {
+    let wasCalled = false;
+
+    new Timer(1, null, () => {
+      wasCalled = true;
+    }).tick();
+    assert.isFalse(wasCalled);
+
+    new Timer(0, null, () => {
+      wasCalled = true;
+    }).tick();
+    assert.isTrue(wasCalled);
   });
 });
