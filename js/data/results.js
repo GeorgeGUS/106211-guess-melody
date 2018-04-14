@@ -1,4 +1,7 @@
-/*
+import {initialState, numerals} from "./data";
+import {declOfNum} from "../utils";
+
+/**
  * Получение результов игрока
  * @param {Array} allUserResults - Массив результатов игр других игроков
  * @param {number} points - количество заработанных очков
@@ -16,7 +19,25 @@ export const getResults = (allUserResults, points) => {
   return [userPosition, userCount, userPercent];
 };
 
-/*
+/**
+ * Вывод сообщения со статистикой игрока
+ * @param {Object} result - Объект результата игрока
+ * @return {string} - Сообщение о результате игрока
+ */
+const createResultMessage = (result) => {
+  const userTime = initialState.time - result.restTime;
+  const minutes = declOfNum(Math.floor(userTime / 60), numerals.minutes);
+  const seconds = declOfNum(Math.floor(userTime % 60), numerals.seconds);
+  const points = declOfNum(result.points, numerals.points);
+  const fastPoints = declOfNum(result.fastPoints, numerals.fastPoints);
+  const mistakes = declOfNum(initialState.attempts - result.restNotes, numerals.mistakes);
+
+  return `За&nbsp;${minutes} и ${seconds}
+      <br>вы&nbsp;набрали ${points} (${fastPoints}),
+      <br>совершив ${mistakes}`;
+};
+
+/**
  * Вывод сообщения с результами игрока
  * @param {Array} allUserResults - Массив результатов игр других игроков
  * @param {Object} userResult - Объект результата игрока
@@ -27,14 +48,23 @@ export const getResults = (allUserResults, points) => {
  */
 export const printResults = (allUserResults, userResult) => {
   if (userResult.restNotes === 0) {
-    return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
+    return {
+      result: `У вас закончились все попытки. Ничего, повезёт в следующий раз!`,
+      comparison: ``
+    };
   }
 
   if (userResult.restTime === 0) {
-    return `Время вышло! Вы не успели отгадать все мелодии.`;
+    return {
+      result: `Время вышло! Вы не успели отгадать все мелодии.`,
+      comparison: ``
+    };
   }
 
   const [position, total, percent] = getResults(allUserResults, userResult.points);
 
-  return `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`;
+  return {
+    result: createResultMessage(userResult),
+    comparison: `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`
+  };
 };
