@@ -15,19 +15,23 @@ export const currentState = {
   attempts: 3,
   time: 300,
   user: {
-    points: 0,
-    fastPoints: 0,
-    restNotes: 3,
-    restTime: 300
+    points: 10, // Для теста, потом сброшу
+    fastPoints: 3, // Для теста, потом сброшу
+    restNotes: 2, // Для теста, потом сброшу
+    restTime: 123 // Для теста, потом сброшу
   }
 };
 
 export const statistics = [1, 4, 5, 8];
 
-export const kindOfGame = [`artist`, `genre`];
+// Пока неиспользуемые данные
 
+/* export const kindOfGame = [`artist`, `genre`];
+
+// Подразумевается переключение экранов по этому массиву
 export const screens = [`welcome`, kindOfGame, `result`];
 
+// Примерная структура того, как будут выглядеть вопросы
 export const questions = {
   artist: new Map([
     [``, ``],
@@ -43,7 +47,7 @@ export const questions = {
     [``, ``],
     [``, ``]
   ])
-};
+};*/
 
 export const numerals = {
   mistakes: [`ошибку`, `ошибки`, `ошибок`],

@@ -1,5 +1,4 @@
-import {createElementFromString} from '../create-element';
-import showScreen from "../show-screen";
+import {createElementFromString, showScreen} from '../utils';
 import artist from "./screen-level-artist";
 
 const welcome = `
@@ -18,7 +17,7 @@ const element = createElementFromString(welcome);
 
 element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showScreen(artist);
+  showScreen(artist); // TODO: Заменить на функцию запуска вопросов
 });
 
 export default element;
