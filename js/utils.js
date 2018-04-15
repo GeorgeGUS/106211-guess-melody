@@ -34,3 +34,10 @@ export const declOfNum = (n, titles) => {
 
   return `${n}&nbsp;${titles[plural]}`;
 };
+
+/**
+ * Возвращает число из строки (если число одно)
+ * @param {string} string
+ * @return {number}
+ */
+export const getNumFromString = (string) => Number(string.replace(/\D/g, ``));

@@ -24,31 +24,6 @@ export const currentState = {
 
 export const statistics = [1, 4, 5, 8];
 
-// Пока неиспользуемые данные
-
-/* export const kindOfGame = [`artist`, `genre`];
-
-// Подразумевается переключение экранов по этому массиву
-export const screens = [`welcome`, kindOfGame, `result`];
-
-// Примерная структура того, как будут выглядеть вопросы
-export const questions = {
-  artist: new Map([
-    [``, ``],
-    [``, ``],
-    [``, ``],
-    [``, ``],
-    [``, ``]
-  ]),
-  genre: new Map([
-    [``, ``],
-    [``, ``],
-    [``, ``],
-    [``, ``],
-    [``, ``]
-  ])
-};*/
-
 export const numerals = {
   mistakes: [`ошибку`, `ошибки`, `ошибок`],
   points: [`балл`, `балла`, `баллов`],
@@ -90,7 +65,7 @@ export const melodies = [
     artist: `Краснознаменная дивизия имени моей бабушки`,
     name: `Таити`,
     image: `https://avatars.yandex.net/get-music-content/42108/47a06401.p.519187/s200x200`,
-    src: `https://cs9-4v4.vkuseraudio.net/p24/e2550ce69ef3f7.mp3?extra=qI0zdFEL_CoutWtPHI046NV4WleDMF5qSmErNxlGeHwiWdgR5wPpzVbIjjhYqRfxmdNI5S4xZ01GWOsrylOXvz6roC1kqcMeAF4-tkgn-iNlnl7zdyP5BCilrikVztp1tT5bGcy8xX0`,
+    src: `https://cs9-4v4.vkuseraudio.net/p24/fc4bc59564166c.mp3?extra=9blZlj83vn5SLqHu26VnGLb9vmajIe-PCb3leS1t7Xw5_ormMhfG4iz_ZSVDTIJSu07fBFrlKqAijbpazFdkxHmg0A9mLarx3Qq0-S1o4Yl735Kjop4AcYOtW_1TNqjlU7PQluQxtpk`,
     genre: `Rock`
   },
   {
@@ -141,5 +116,60 @@ export const melodies = [
     image: `https://f4.bcbits.com/img/0004181452_10.jpg`,
     src: `https://www.youtube.com/audiolibrary_download?vid=bcbe5be936a32fb1`,
     genre: `Electronic`
+  }
+];
+
+
+// Начальная структура того, как будут выглядеть вопросы
+export const questions = [
+  {
+    type: `artist`,
+    variants: new Set([0, 1, 2]),
+    answer: 0
+  },
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Rock`
+  },
+  {
+    type: `artist`,
+    variants: new Set([0, 1, 2]),
+    answer: 0
+  },
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Rock`
+  },
+  {
+    type: `artist`,
+    variants: new Set([0, 1, 2]),
+    answer: 0
+  },
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Rock`
+  },
+  {
+    type: `artist`,
+    variants: new Set([0, 1, 2]),
+    answer: 0
+  },
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Rock`
+  },
+  {
+    type: `artist`,
+    variants: new Set([0, 1, 2]),
+    answer: 0
+  },
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Rock`
   }
 ];

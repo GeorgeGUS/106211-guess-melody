@@ -1,9 +1,10 @@
 import {createElementFromString} from '../utils';
 import player from './player';
+import {melodies} from "../data/data";
 
 export const INPUT_NAME = `answer`;
 
-export default (melody, id) => {
+export default (id) => {
   const genreAnswer = `
   <div class="genre-answer">
     <!--Player-->
@@ -13,7 +14,7 @@ export default (melody, id) => {
 
   const element = createElementFromString(genreAnswer);
 
-  element.insertBefore(player(melody), element.firstChild);
+  element.insertBefore(player(melodies[id]), element.firstChild);
 
   return element;
 };
