@@ -10,6 +10,7 @@ export const initialState = {
   }
 };
 
+export const INPUT_NAME = `answer`;
 
 export const statistics = [1, 4, 5, 8];
 
@@ -47,21 +48,21 @@ export const melodies = [
     artist: `Пелагея`,
     name: `Не для тебя`,
     image: `https://avatars.yandex.net/get-music-content/34131/865593e3.p.160603/s200x200`,
-    src: `https://cs9-2v4.vkuseraudio.net/p6/c82f817a9e5e0f.mp3?extra=ccpesYIdZZCXVPLR0bcTGSH1qsjC-JLvdR_H3JT-qYNwOLyG3Qw8ItzftklkBfww1lb_6hkb8HiXSgOv89TomzrTssJnqilcK1DwcWl7hijyV6DRONgUB6yPTbnt8Bb6rhYIt3WZJx8`,
+    src: `https://myzcloud.me/song/dl/636594516620011335/cce7ea16b80a7ce9b632a4e7b8124f8a/5630543`,
     genre: `Folk`
   },
   {
     artist: `Краснознаменная дивизия имени моей бабушки`,
     name: `Таити`,
     image: `https://avatars.yandex.net/get-music-content/42108/47a06401.p.519187/s200x200`,
-    src: `https://cs9-4v4.vkuseraudio.net/p24/fc4bc59564166c.mp3?extra=9blZlj83vn5SLqHu26VnGLb9vmajIe-PCb3leS1t7Xw5_ormMhfG4iz_ZSVDTIJSu07fBFrlKqAijbpazFdkxHmg0A9mLarx3Qq0-S1o4Yl735Kjop4AcYOtW_1TNqjlU7PQluQxtpk`,
+    src: `https://myzcloud.me/song/dl/636594514038446843/7e27418a95a60559a316cbe1a765d399/34732350`,
     genre: `Rock`
   },
   {
     artist: `Lorde`,
     name: `Royals`,
     image: `https://avatars.yandex.net/get-music-content/97284/cd60c411.p.1654436/s200x200`,
-    src: `https://cs9-15v4.vkuseraudio.net/p14/aa8b0315e25aac.mp3?extra=xkbrEN58rP8iV9-tBblxlYtLa-T24m1p-bHPvJhonCA4uIpKE2x0H17f6a1HdhpDx4-g1WpQZMaANSuO8mjji8AvxbuSBwvz2ogoSke1jPd9Pw1txnobFznhAh7M79EE204-ikped5Rdxw`,
+    src: `https://myzcloud.me/song/dl/636594515775991200/c1ac2312a2e3ae6e8e2701a5fe527d52/15503620`,
     genre: `Pop`
   },
   {
@@ -103,7 +104,7 @@ export const melodies = [
     artist: `Gunnar Olsen`,
     name: `Home Stretch`,
     image: `https://f4.bcbits.com/img/0004181452_10.jpg`,
-    src: `https://www.youtube.com/audiolibrary_download?vid=bcbe5be936a32fb1`,
+    src: `https://www.youtube.com/audiolibrary_download?vid=6feb0654949ef64c`,
     genre: `Electronic`
   }
 ];
@@ -125,17 +126,17 @@ export const questions = [
   {
     type: `artist`,
     variants: new Set([0, 1, 2]),
-    answer: 2
+    answer: 1
   },
   {
     type: `genre`,
-    variants: new Set([1, 2, 3, 4]),
+    variants: new Set([0, 1, 2, 3]),
     answer: `Rock`
   },
   {
     type: `artist`,
     variants: new Set([3, 4, 5]),
-    answer: 3
+    answer: 4
   },
   {
     type: `genre`,
@@ -147,29 +148,29 @@ export const questions = [
     variants: new Set([6, 7, 8]),
     answer: 7
   },
-  // {
-  //   type: `genre`,
-  //   variants: new Set([1, 2, 3, 4]),
-  //   answer: `Rock`
-  // },
-  // {
-  //   type: `artist`,
-  //   variants: new Set([0, 1, 2]),
-  //   answer: 0
-  // },
-  // {
-  //   type: `genre`,
-  //   variants: new Set([1, 2, 3, 4]),
-  //   answer: `Rock`
-  // },
-  // {
-  //   type: `artist`,
-  //   variants: new Set([0, 1, 2]),
-  //   answer: 0
-  // },
-  // {
-  //   type: `genre`,
-  //   variants: new Set([1, 2, 3, 4]),
-  //   answer: `Rock`
-  // }
+  {
+    type: `genre`,
+    variants: new Set([1, 2, 3, 4]),
+    answer: `Jazz`
+  },
+  {
+    type: `artist`,
+    variants: new Set([3, 6, 8]),
+    answer: 6
+  },
+  {
+    type: `genre`,
+    variants: new Set([5, 6, 7, 8]),
+    answer: `Country`
+  },
+  {
+    type: `artist`,
+    variants: new Set([4, 5, 7]),
+    answer: 5
+  },
+  {
+    type: `genre`,
+    variants: new Set([3, 4, 5, 8]),
+    answer: `Electronic`
+  }
 ];

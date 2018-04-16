@@ -1,7 +1,5 @@
 import {createElementFromString} from '../utils';
-import {melodies} from "../data/data";
-
-export const INPUT_NAME = `answer`;
+import {INPUT_NAME, melodies} from "../data/data";
 
 export default (id) => {
   const melody = melodies[id];

@@ -2,7 +2,7 @@ import {createElementFromString, showScreen} from '../utils';
 
 import {printResults} from '../data/results';
 import {currentState, initialState, questions} from "../data/data";
-import level from "./screen-level-artist";
+import level from "./screen-level";
 
 export default (screen, stats, result) => {
   const stat = printResults(stats, result);

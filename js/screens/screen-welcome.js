@@ -1,5 +1,5 @@
 import {createElementFromString, showScreen} from '../utils';
-import level from "./screen-level-artist";
+import level from "./screen-level";
 import {questions, initialState} from '../data/data';
 
 
