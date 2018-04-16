@@ -1,6 +1,8 @@
 import {createElementFromString, showScreen} from '../utils';
 
 import {printResults} from '../data/results';
+import {currentState, initialState, questions} from "../data/data";
+import level from "./screen-level-artist";
 
 export default (screen, stats, result) => {
   const stat = printResults(stats, result);
@@ -17,8 +19,8 @@ export default (screen, stats, result) => {
 
   element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
     evt.preventDefault();
-    // showScreen(welcome); // TODO: Заменить на функцию сброса состояния с переходом на экран приветствия
-    // startGame();
+    currentState.question = 0;
+    showScreen(level(questions[initialState.question]));
   });
 
   return element;

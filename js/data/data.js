@@ -1,5 +1,5 @@
 export const initialState = {
-  currentScreen: 0,
+  question: 0,
   attempts: 3,
   time: 300,
   user: {
@@ -10,17 +10,6 @@ export const initialState = {
   }
 };
 
-export const currentState = {
-  currentScreen: 0,
-  attempts: 3,
-  time: 300,
-  user: {
-    points: 10, // Для теста, потом сброшу
-    fastPoints: 3, // Для теста, потом сброшу
-    restNotes: 2, // Для теста, потом сброшу
-    restTime: 123 // Для теста, потом сброшу
-  }
-};
 
 export const statistics = [1, 4, 5, 8];
 
@@ -119,13 +108,24 @@ export const melodies = [
   }
 ];
 
+export const currentState = {
+  question: 0,
+  attempts: 3,
+  time: 300,
+  user: {
+    points: 10, // Для теста, потом сброшу
+    fastPoints: 3, // Для теста, потом сброшу
+    restNotes: 2, // Для теста, потом сброшу
+    restTime: 123 // Для теста, потом сброшу
+  }
+};
 
 // Начальная структура того, как будут выглядеть вопросы
 export const questions = [
   {
     type: `artist`,
     variants: new Set([0, 1, 2]),
-    answer: 0
+    answer: 2
   },
   {
     type: `genre`,
@@ -134,42 +134,42 @@ export const questions = [
   },
   {
     type: `artist`,
-    variants: new Set([0, 1, 2]),
-    answer: 0
+    variants: new Set([3, 4, 5]),
+    answer: 3
   },
   {
     type: `genre`,
-    variants: new Set([1, 2, 3, 4]),
-    answer: `Rock`
+    variants: new Set([5, 6, 7, 8]),
+    answer: `Pop`
   },
   {
     type: `artist`,
-    variants: new Set([0, 1, 2]),
-    answer: 0
+    variants: new Set([6, 7, 8]),
+    answer: 7
   },
-  {
-    type: `genre`,
-    variants: new Set([1, 2, 3, 4]),
-    answer: `Rock`
-  },
-  {
-    type: `artist`,
-    variants: new Set([0, 1, 2]),
-    answer: 0
-  },
-  {
-    type: `genre`,
-    variants: new Set([1, 2, 3, 4]),
-    answer: `Rock`
-  },
-  {
-    type: `artist`,
-    variants: new Set([0, 1, 2]),
-    answer: 0
-  },
-  {
-    type: `genre`,
-    variants: new Set([1, 2, 3, 4]),
-    answer: `Rock`
-  }
+  // {
+  //   type: `genre`,
+  //   variants: new Set([1, 2, 3, 4]),
+  //   answer: `Rock`
+  // },
+  // {
+  //   type: `artist`,
+  //   variants: new Set([0, 1, 2]),
+  //   answer: 0
+  // },
+  // {
+  //   type: `genre`,
+  //   variants: new Set([1, 2, 3, 4]),
+  //   answer: `Rock`
+  // },
+  // {
+  //   type: `artist`,
+  //   variants: new Set([0, 1, 2]),
+  //   answer: 0
+  // },
+  // {
+  //   type: `genre`,
+  //   variants: new Set([1, 2, 3, 4]),
+  //   answer: `Rock`
+  // }
 ];

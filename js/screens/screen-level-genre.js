@@ -4,9 +4,9 @@ import {processUserAnswer} from "../game-process";
 import gameState from '../components/game-state';
 import genreAnswer, {INPUT_NAME} from '../components/genre-answer';
 
-import {genres} from "../data/data";
+import {currentState, genres} from "../data/data";
 
-export default (question, state) => {
+export default (question) => {
   const levelGenre = `
   <section class="main main--level main--level-genre">
       <!--gameState-->
@@ -20,7 +20,7 @@ export default (question, state) => {
   </section>`;
 
   const element = createElementFromString(levelGenre);
-  element.insertBefore(gameState(state), element.firstChild);
+  element.insertBefore(gameState(currentState), element.firstChild);
   const form = element.querySelector(`form`);
   const sendBtn = form.querySelector(`.genre-answer-send`);
 

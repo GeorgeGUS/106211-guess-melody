@@ -1,8 +1,6 @@
 import {createElementFromString, showScreen} from '../utils';
-import artist from "./screen-level-artist";
-import {questions} from '../data/data';
-
-import {startGame} from "../game-process";
+import level from "./screen-level-artist";
+import {questions, initialState} from '../data/data';
 
 
 const welcome = `
@@ -21,8 +19,7 @@ const element = createElementFromString(welcome);
 
 element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showScreen(artist(questions[0])); // TODO: Заменить на функцию запуска вопросов
-  startGame();
+  showScreen(level(questions[initialState.question]));
 });
 
 export default element;
