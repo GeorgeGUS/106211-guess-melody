@@ -3,13 +3,14 @@ import {createElementFromString} from '../utils';
 /**
  * Шаблон музыкального плеера
  * @param {Object} melody - мелодия для воспроизведения
+ * @param {string} attrs - дополнительные атрибуты аудио, например autoplay
  * @return {Node}
  */
-export default (melody) => {
+export default (melody, attrs) => {
   const player = `
   <div class="player-wrapper">
     <div class="player">
-      <audio src="${melody.src}"></audio>
+      <audio src="${melody.src}" ${attrs}></audio>
       <button class="player-control player-control--play"></button>
       <div class="player-track">
         <span class="player-status"></span>
@@ -37,6 +38,15 @@ export default (melody) => {
     playerBtn.classList.toggle(`player-control--pause`);
   };
 
+  /**
+   * Меняет внешний вид кнопки на паузу, если музыка играет
+   */
+  const togglePlayerBtnIfPlaying = () => {
+    playerBtn.classList.remove(`player-control--play`);
+    playerBtn.classList.add(`player-control--pause`);
+  };
+
+  audio.addEventListener(`playing`, togglePlayerBtnIfPlaying);
   playerBtn.addEventListener(`click`, playerBtnHolder);
 
   return element;

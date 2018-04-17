@@ -57,7 +57,7 @@ export default (question) => {
     // Подсказка ;)
     console.log(`Правильный ответ: ${melodies[question.answer].artist}`);
 
-    element.querySelector(`.main-wrap`).insertBefore(player(melodies[question.answer]), form);
+    element.querySelector(`.main-wrap`).insertBefore(player(melodies[question.answer], `autoplay`), form);
 
     inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
       evt.preventDefault();
