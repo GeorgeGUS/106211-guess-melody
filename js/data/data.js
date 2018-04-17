@@ -1,10 +1,10 @@
-export const initialState = {
+export const gameState = {
   question: 0,
+  answers: [],
   attempts: 3,
   time: 300,
   user: {
     points: 0,
-    fastPoints: 0,
     restNotes: 3,
     restTime: 300
   }
@@ -34,7 +34,7 @@ export const genres = {
 
 export const result = {
   WIN: {
-    title: `Вы - настоящий меломан!`,
+    title: [`Вы - настоящий меломан!`, `Мне бы вашу удачу!`],
     button: `Сыграть ещё раз`
   },
   LOSE: {
@@ -48,22 +48,29 @@ export const melodies = [
     artist: `Пелагея`,
     name: `Не для тебя`,
     image: `https://avatars.yandex.net/get-music-content/34131/865593e3.p.160603/s200x200`,
-    src: `https://myzcloud.me/song/dl/636594516620011335/cce7ea16b80a7ce9b632a4e7b8124f8a/5630543`,
+    src: `https://instaud.io/_/239d.mp3`,
     genre: `Folk`
   },
   {
     artist: `Краснознаменная дивизия имени моей бабушки`,
     name: `Таити`,
     image: `https://avatars.yandex.net/get-music-content/42108/47a06401.p.519187/s200x200`,
-    src: `https://myzcloud.me/song/dl/636594514038446843/7e27418a95a60559a316cbe1a765d399/34732350`,
+    src: `https://instaud.io/_/239b.mp3`,
     genre: `Rock`
   },
   {
     artist: `Lorde`,
     name: `Royals`,
     image: `https://avatars.yandex.net/get-music-content/97284/cd60c411.p.1654436/s200x200`,
-    src: `https://myzcloud.me/song/dl/636594515775991200/c1ac2312a2e3ae6e8e2701a5fe527d52/15503620`,
+    src: `https://instaud.io/_/239c.mp3`,
     genre: `Pop`
+  },
+  {
+    artist: `The Weeknd ft. Duft Punk`,
+    name: `I Feel It Coming`,
+    image: `https://cdn-85d.myzcloud.me/img/68/13012763/33614481.jpg`,
+    src: `https://instaud.io/_/239e.mp3`,
+    genre: `R&B`
   },
   {
     artist: `Kevin MacLeod`,
@@ -109,18 +116,6 @@ export const melodies = [
   }
 ];
 
-export const currentState = {
-  question: 0,
-  attempts: 3,
-  time: 300,
-  user: {
-    points: 10, // Для теста, потом сброшу
-    fastPoints: 3, // Для теста, потом сброшу
-    restNotes: 2, // Для теста, потом сброшу
-    restTime: 123 // Для теста, потом сброшу
-  }
-};
-
 // Начальная структура того, как будут выглядеть вопросы
 export const questions = [
   {
@@ -130,7 +125,7 @@ export const questions = [
   },
   {
     type: `genre`,
-    variants: new Set([0, 1, 2, 3]),
+    variants: new Set([1, 3, 4, 5]),
     answer: `Rock`
   },
   {
@@ -146,7 +141,7 @@ export const questions = [
   {
     type: `artist`,
     variants: new Set([6, 7, 8]),
-    answer: 7
+    answer: 8
   },
   {
     type: `genre`,
@@ -160,17 +155,17 @@ export const questions = [
   },
   {
     type: `genre`,
-    variants: new Set([5, 6, 7, 8]),
-    answer: `Country`
+    variants: new Set([4, 6, 7, 8]),
+    answer: `R&B`
   },
   {
     type: `artist`,
     variants: new Set([4, 5, 7]),
-    answer: 5
+    answer: 4
   },
   {
     type: `genre`,
-    variants: new Set([3, 4, 5, 8]),
+    variants: new Set([3, 4, 5, 9]),
     answer: `Electronic`
   }
 ];

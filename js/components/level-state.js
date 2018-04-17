@@ -2,9 +2,9 @@ import {createElementFromString} from '../utils';
 
 export default (state) => {
   const addFirstZero = (num) => (`0${Math.floor(num)}`).slice(-2);
-  const mistakes = new Array(state.attempts).fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`).join(``);
+  const mistakes = new Array(state.user.restNotes).fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`).join(``);
 
-  const gameState = `
+  const levelState = `
     <div>
       <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
         <circle
@@ -23,5 +23,5 @@ export default (state) => {
     </div>
   `;
 
-  return createElementFromString(gameState);
+  return createElementFromString(levelState);
 };

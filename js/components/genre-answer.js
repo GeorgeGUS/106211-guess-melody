@@ -6,7 +6,7 @@ export default (id) => {
   const genreAnswer = `
   <div class="genre-answer">
     <!--Player-->
-    <input type="checkbox" name="${INPUT_NAME}" value="answer-${id}" id="a-${id}">
+    <input type="checkbox" name="${INPUT_NAME}" value="${melodies[id].genre}" id="a-${id}">
     <label class="genre-answer-check" for="a-${id}"></label>
   </div>`;
 

@@ -1,7 +1,5 @@
 // Максимальное число попыток
 const MAX_NUM_OF_ATTEMPTS = 3;
-// Количество вопросов
-const NUM_OF_QUESTIONS = 10;
 // Максимальное время на быстрый ответ
 const MAX_FAST_ANSWER_TIME = 30;
 
@@ -13,12 +11,16 @@ const MAX_FAST_ANSWER_TIME = 30;
  */
 export const calcScoring = (answers, restNotes) => {
   const falseAnswers = answers.filter((a) => !a.success).length;
+
   if (falseAnswers !== MAX_NUM_OF_ATTEMPTS - restNotes) {
-    throw new Error(`Wrong answers don't match the rest of the notes`);
+    throw new Error(`Wrong answers (${falseAnswers}) don't match the rest of the notes
+    (${MAX_NUM_OF_ATTEMPTS - restNotes})`);
   }
 
-  if (restNotes === 0 || answers.length < NUM_OF_QUESTIONS) {
-    return -1;
+  const isAttemptsOver = restNotes === 0 || falseAnswers === MAX_NUM_OF_ATTEMPTS;
+
+  if (isAttemptsOver) {
+    return null;
   }
 
   return answers.reduce((acc, current) => {

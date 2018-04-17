@@ -1,6 +1,6 @@
 import {createElementFromString, showScreen} from '../utils';
 import level from "./screen-level";
-import {questions, initialState} from '../data/data';
+import {questions, gameState} from '../data/data';
 
 
 const welcome = `
@@ -19,7 +19,7 @@ const element = createElementFromString(welcome);
 
 element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showScreen(level(questions[initialState.question]));
+  showScreen(level(questions[gameState.question]));
 });
 
 export default element;

@@ -1,10 +1,11 @@
-import {createElementFromString, getNumFromString} from '../utils';
+/* eslint-disable no-console */
+import {createElementFromString} from '../utils';
 import {processUserAnswer} from "../game-process";
 
-import {INPUT_NAME, currentState, melodies, genres} from "../data/data";
+import {INPUT_NAME, gameState, melodies, genres} from "../data/data";
 import artistAnswer from '../components/artist-answer';
 import genreAnswer from '../components/genre-answer';
-import gameState from '../components/game-state';
+import levelState from '../components/level-state';
 import player from '../components/player';
 
 export default (question) => {
@@ -21,7 +22,7 @@ export default (question) => {
 
   const level = `
   <section class="main main--level main--level-artist">
-    <!--gameState-->
+    <!--levelState-->
     <div class="main-wrap">
       ${title}
       <!--Player-->
@@ -33,13 +34,9 @@ export default (question) => {
   </section>`;
 
   const element = createElementFromString(level);
-  element.insertBefore(gameState(currentState), element.firstChild);
+  element.insertBefore(levelState(gameState), element.firstChild);
   const form = element.querySelector(`form`);
   const sendBtn = form.querySelector(`.genre-answer-send`);
-
-  if (question.type === `artist`) {
-    element.querySelector(`.main-wrap`).insertBefore(player(melodies[question.answer]), form);
-  }
 
   const answersList = document.createDocumentFragment();
   question.variants.forEach((id) => {
@@ -50,22 +47,29 @@ export default (question) => {
   const inputs = Array.from(form[INPUT_NAME]);
 
   if (question.type === `artist`) {
+    // Подсказка ;)
+    console.log(`Правильный ответ: ${melodies[question.answer].artist}`);
+
+    element.querySelector(`.main-wrap`).insertBefore(player(melodies[question.answer]), form);
+
     inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
       evt.preventDefault();
-      const answer = getNumFromString(evt.target.value);
-      processUserAnswer(answer);
+      const answer = Number(evt.target.value);
+      processUserAnswer(question, answer);
       evt.target.checked = false;
     }));
-  } else {
+
+  } else if (question.type === `genre`) {
+    // Подсказка ;)
+    const rightAnswers = [...question.variants].filter((i) => melodies[i].genre === question.answer).map((i) => [...question.variants].indexOf(i) + 1).join(`, `);
+    console.log(`Правильные ответы: ${rightAnswers}`);
+
     form.appendChild(sendBtn);
 
-    const resetLevel = () => {
-      sendBtn.disabled = true;
-      inputs.forEach((answer) => {
-        answer.checked = false;
-      });
-    };
-    resetLevel();
+    sendBtn.disabled = true;
+    inputs.forEach((answer) => {
+      answer.checked = false;
+    });
 
     inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
       evt.preventDefault();
@@ -75,8 +79,8 @@ export default (question) => {
 
     form.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      const answer = inputs.filter((i) => i.checked).map((i) => getNumFromString(i.id));
-      processUserAnswer(answer);
+      const answer = inputs.filter((i) => i.checked).map((i) => i.value);
+      processUserAnswer(question, answer);
     });
   }
 

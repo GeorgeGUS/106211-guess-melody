@@ -1,4 +1,4 @@
-import {initialState, numerals} from "./data";
+import {gameState, numerals} from "./data";
 import {declOfNum} from "../utils";
 
 /**
@@ -25,12 +25,12 @@ export const getResults = (allUserResults, points) => {
  * @return {string} - Сообщение о результате игрока
  */
 const createResultMessage = (result) => {
-  const userTime = initialState.time - result.restTime;
+  const userTime = gameState.time - result.restTime;
   const minutes = declOfNum(Math.floor(userTime / 60), numerals.minutes);
   const seconds = declOfNum(Math.floor(userTime % 60), numerals.seconds);
   const points = declOfNum(result.points, numerals.points);
-  const fastPoints = declOfNum(result.fastPoints, numerals.fastPoints);
-  const mistakes = declOfNum(initialState.attempts - result.restNotes, numerals.mistakes);
+  const fastPoints = declOfNum(gameState.answers.filter((a) => a.time < 30).length, numerals.fastPoints);
+  const mistakes = declOfNum(gameState.attempts - result.restNotes, numerals.mistakes);
 
   return `За&nbsp;${minutes} и ${seconds}
       <br>вы&nbsp;набрали ${points} (${fastPoints}),
@@ -49,7 +49,7 @@ const createResultMessage = (result) => {
 export const printResults = (allUserResults, userResult) => {
   if (userResult.restNotes === 0) {
     return {
-      result: `У вас закончились все попытки. Ничего, повезёт в следующий раз!`,
+      result: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
       comparison: ``
     };
   }
