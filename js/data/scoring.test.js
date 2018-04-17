@@ -19,15 +19,6 @@ describe(`Checking the scoring`, () => {
     ], 1), 8);
   });
 
-  /* Не вижу смысла в этой проверке, т.к. эта ситуация может произойти только
-  * в случае истечения времени, но это мы можем обработать в таймере */
-
-  // it(`should return null if the answers are less than questions`, () => {
-  //   assert.equal(calcScoring([], 3), null);
-  //   assert.equal(calcScoring(Array(1).fill({success: true, time: 0}), 3), null);
-  //   assert.equal(calcScoring(Array(9).fill({success: true, time: 30}), 3), null);
-  // });
-
   it(`should return null if all attempts are over`, () => {
     assert.equal(calcScoring(Array(3).fill({success: false, time: 2}), 0), null);
   });

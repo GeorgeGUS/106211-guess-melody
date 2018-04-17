@@ -1,5 +1,10 @@
 import {createElementFromString} from '../utils';
 
+/**
+ * Шаблон музыкального плеера
+ * @param {Object} melody - мелодия для воспроизведения
+ * @return {Node}
+ */
 export default (melody) => {
   const player = `
   <div class="player-wrapper">
@@ -16,7 +21,10 @@ export default (melody) => {
   const audio = element.querySelector(`audio`);
   const playerBtn = element.querySelector(`.player-control`);
 
-
+  /**
+   * Обработчик нажатия кнопки воспроизведения/паузы
+   * @param {Event} evt - событие клика по кнопке
+   */
   const playerBtnHolder = (evt) => {
     evt.preventDefault();
     if (audio.paused) {

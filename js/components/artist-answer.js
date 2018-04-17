@@ -1,6 +1,11 @@
 import {createElementFromString} from '../utils';
 import {INPUT_NAME, melodies} from "../data/data";
 
+/**
+ * Шаблон вариантов ответов по артистам
+ * @param {number} id - Номер мелодии из списка вопросов
+ * @return {Node}
+ */
 export default (id) => {
   const melody = melodies[id];
   const artistAnswer = `

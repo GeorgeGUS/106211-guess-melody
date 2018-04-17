@@ -1,23 +1,30 @@
+// Временно разрешил использование console.log для подсказок ответов на вопросы
 /* eslint-disable no-console */
+import {INPUT_NAME, gameState, melodies, genres} from "../data/data";
 import {createElementFromString} from '../utils';
 import {processUserAnswer} from "../game-process";
-
-import {INPUT_NAME, gameState, melodies, genres} from "../data/data";
 import artistAnswer from '../components/artist-answer';
 import genreAnswer from '../components/genre-answer';
 import levelState from '../components/level-state';
 import player from '../components/player';
 
+/**
+ * Шаблон экрана уровня игры с текущим вопросом и состоянием игры
+ * Имеет два режима в зависимости от типа вопроса:
+ * 1. выбор артиста по заданной мелодии
+ * 2. выбор всех мелодий определённого жанра
+ * @param {Object} question - Текущий вопрос
+ * @return {Node}
+ */
 export default (question) => {
   let title = `<h2 class="title main-title">Кто исполняет эту песню?</h2>`;
   let formClass = `main-list`;
   let btn = ``;
 
-
   if (question.type === `genre`) {
     title = `<h2 class="title" align="center">Выберите все треки<br> в жанре ${genres[question.answer]}</h2>`;
     formClass = `genre`;
-    btn = `<button class="genre-answer-send" type="submit">Ответить</button>`;
+    btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
   }
 
   const level = `
@@ -56,20 +63,14 @@ export default (question) => {
       evt.preventDefault();
       const answer = Number(evt.target.value);
       processUserAnswer(question, answer);
-      evt.target.checked = false;
     }));
 
-  } else if (question.type === `genre`) {
+  } else {
     // Подсказка ;)
-    const rightAnswers = [...question.variants].filter((i) => melodies[i].genre === question.answer).map((i) => [...question.variants].indexOf(i) + 1).join(`, `);
+    const rightAnswers = Array.from(question.variants).filter((i) => melodies[i].genre === question.answer).map((i) => Array.from(question.variants).indexOf(i) + 1).join(`, `);
     console.log(`Правильные ответы: ${rightAnswers}`);
 
     form.appendChild(sendBtn);
-
-    sendBtn.disabled = true;
-    inputs.forEach((answer) => {
-      answer.checked = false;
-    });
 
     inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
       evt.preventDefault();
@@ -79,7 +80,7 @@ export default (question) => {
 
     form.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
-      const answer = inputs.filter((i) => i.checked).map((i) => i.value);
+      const answer = inputs.filter((i) => i.checked).map((i) => Number(i.value));
       processUserAnswer(question, answer);
     });
   }

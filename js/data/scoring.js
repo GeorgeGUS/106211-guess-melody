@@ -6,18 +6,18 @@ const MAX_FAST_ANSWER_TIME = 30;
 /*
  * Подсчёт набранных баллов игрока
  * @param {Array} answers - Массив ответов пользователя
- * @param {number} restNotes - Количество оставшихся нот
+ * @param {number} restAttempts - Количество оставшихся нот
  * @return {number} - Количество набранных очков
  */
-export const calcScoring = (answers, restNotes) => {
+export const calcScoring = (answers, restAttempts) => {
   const falseAnswers = answers.filter((a) => !a.success).length;
 
-  if (falseAnswers !== MAX_NUM_OF_ATTEMPTS - restNotes) {
+  if (falseAnswers !== MAX_NUM_OF_ATTEMPTS - restAttempts) {
     throw new Error(`Wrong answers (${falseAnswers}) don't match the rest of the notes
-    (${MAX_NUM_OF_ATTEMPTS - restNotes})`);
+    (${MAX_NUM_OF_ATTEMPTS - restAttempts})`);
   }
 
-  const isAttemptsOver = restNotes === 0 || falseAnswers === MAX_NUM_OF_ATTEMPTS;
+  const isAttemptsOver = restAttempts === 0 || falseAnswers === MAX_NUM_OF_ATTEMPTS;
 
   if (isAttemptsOver) {
     return null;

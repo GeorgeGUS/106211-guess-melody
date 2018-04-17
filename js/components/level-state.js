@@ -1,8 +1,13 @@
 import {createElementFromString} from '../utils';
 
+/**
+ * Шаблон состояния игры в виде таймера и оставшихся попыток
+ * @param {Object} state - Текущее состояние игры
+ * @return {Node}
+ */
 export default (state) => {
   const addFirstZero = (num) => (`0${Math.floor(num)}`).slice(-2);
-  const mistakes = new Array(state.user.restNotes).fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`).join(``);
+  const mistakes = new Array(state.user.restAttempts).fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`).join(``);
 
   const levelState = `
     <div>

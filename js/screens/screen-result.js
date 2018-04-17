@@ -1,18 +1,27 @@
-import {createElementFromString, showScreen} from '../utils';
-
-import {printResults} from '../data/results';
 import {gameState, questions} from "../data/data";
+import {createElementFromString, showScreen} from '../utils';
+import {printResults} from '../data/results';
 import level from "./screen-level";
 
-export default (screen, stats, result) => {
+/**
+ * Шаблон экрана уровня игры с текущим вопросом и состоянием игры
+ * Имеет два режима в зависимости от типа вопроса:
+ * 1. выбор артиста по заданной мелодии
+ * 2. выбор всех мелодий определённого жанра
+ * @param {Object} screenType - Тип экрана в случае победы или проигрыша
+ * @param {Array} stats - Статистика результатов набранных баллов
+ * @param {Object} result - Результат игрока
+ * @return {Node}
+ */
+export default (screenType, stats, result) => {
   const stat = printResults(stats, result);
   const resultScreen = `
   <section class="main main--result">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-    <h2 class="title">${screen.title[Math.floor(Math.random() * screen.title.length)]}</h2>
+    <h2 class="title">${screenType.title[Math.floor(Math.random() * screenType.title.length)]}</h2>
     <div class="main-stat">${stat.result}</div>
     <span class="main-comparison">${stat.comparison}</span>
-    <span role="button" tabindex="0" class="main-replay">${screen.button}</span>
+    <span role="button" tabindex="0" class="main-replay">${screenType.button}</span>
   </section>`;
 
   const element = createElementFromString(resultScreen);
@@ -25,7 +34,7 @@ export default (screen, stats, result) => {
     gameState.user = {
       points: 0,
       fastPoints: 0,
-      restNotes: 3,
+      restAttempts: 3,
       restTime: 300
     };
     showScreen(level(questions[gameState.question]));

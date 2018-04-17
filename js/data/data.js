@@ -5,7 +5,7 @@ export const gameState = {
   time: 300,
   user: {
     points: 0,
-    restNotes: 3,
+    restAttempts: 3,
     restTime: 300
   }
 };
@@ -121,11 +121,11 @@ export const questions = [
   {
     type: `artist`,
     variants: new Set([0, 1, 2]),
-    answer: 1
+    answer: 2
   },
   {
     type: `genre`,
-    variants: new Set([1, 3, 4, 5]),
+    variants: new Set([1, 3, 5, 7]),
     answer: `Rock`
   },
   {
@@ -135,13 +135,13 @@ export const questions = [
   },
   {
     type: `genre`,
-    variants: new Set([5, 6, 7, 8]),
+    variants: new Set([2, 4, 6, 8]),
     answer: `Pop`
   },
   {
     type: `artist`,
     variants: new Set([6, 7, 8]),
-    answer: 8
+    answer: 6
   },
   {
     type: `genre`,
@@ -150,8 +150,8 @@ export const questions = [
   },
   {
     type: `artist`,
-    variants: new Set([3, 6, 8]),
-    answer: 6
+    variants: new Set([4, 6, 8]),
+    answer: 8
   },
   {
     type: `genre`,
@@ -160,8 +160,8 @@ export const questions = [
   },
   {
     type: `artist`,
-    variants: new Set([4, 5, 7]),
-    answer: 4
+    variants: new Set([3, 5, 7]),
+    answer: 7
   },
   {
     type: `genre`,
