@@ -1,7 +1,10 @@
-import {createElementFromString} from '../create-element';
-import showScreen from "../show-screen";
-import artist from "./screen-level-artist";
+import {createElementFromString, showScreen} from '../utils';
+import level from "./screen-level";
+import {questions} from '../data/data';
 
+/**
+ * Шаблон экрана приветствия
+ */
 const welcome = `
   <section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
@@ -18,7 +21,7 @@ const element = createElementFromString(welcome);
 
 element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  showScreen(artist);
+  showScreen(level(questions[0]));
 });
 
 export default element;
