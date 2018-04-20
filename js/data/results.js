@@ -1,4 +1,4 @@
-import {gameState, numerals} from "./data";
+import {INITIAL_STATE, numerals} from "./data";
 
 /**
  * Получение результов игрока
@@ -40,12 +40,12 @@ const declOfNum = (n, titles) => {
  * @return {string} - Сообщение о результате игрока
  */
 const createResultMessage = (result) => {
-  const userTime = gameState.time - result.restTime;
+  const userTime = INITIAL_STATE.time - result.restTime;
   const minutes = declOfNum(Math.floor(userTime / 60), numerals.minutes);
   const seconds = declOfNum(Math.floor(userTime % 60), numerals.seconds);
   const points = declOfNum(result.points, numerals.points);
-  const fastPoints = declOfNum(gameState.answers.filter((a) => a.time < 30).length, numerals.fastPoints);
-  const mistakes = declOfNum(gameState.attempts - result.restAttempts, numerals.mistakes);
+  const fastPoints = declOfNum(result.answers.filter((a) => a.time < 30).length, numerals.fastPoints);
+  const mistakes = declOfNum(INITIAL_STATE.attempts - result.restAttempts, numerals.mistakes);
 
   return `За&nbsp;${minutes} и ${seconds}
       <br>вы&nbsp;набрали ${points} (${fastPoints}),
@@ -64,14 +64,14 @@ const createResultMessage = (result) => {
 export const printResults = (allUserResults, userResult) => {
   if (userResult.restAttempts === 0) {
     return {
-      result: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
+      message: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
       comparison: ``
     };
   }
 
   if (userResult.restTime === 0) {
     return {
-      result: `Время вышло! Вы не успели отгадать все мелодии.`,
+      message: `Время вышло! Вы не успели отгадать все мелодии.`,
       comparison: ``
     };
   }
@@ -79,7 +79,7 @@ export const printResults = (allUserResults, userResult) => {
   const [position, total, percent] = getResults(allUserResults, userResult.points);
 
   return {
-    result: createResultMessage(userResult),
+    message: createResultMessage(userResult),
     comparison: `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`
   };
 };

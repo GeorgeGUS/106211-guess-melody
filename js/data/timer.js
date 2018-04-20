@@ -7,7 +7,7 @@ export default class Timer {
   constructor(timeInSeconds, onTick, onEnd) {
     this._startTime = timeInSeconds;
     this.time = this._startTime;
-    if (onEnd && typeof onEnd === `function`) {
+    if (onTick && typeof onTick === `function`) {
       this.onTick = onTick;
     }
     if (onEnd && typeof onEnd === `function`) {

@@ -1,11 +1,15 @@
-import {createElementFromString, showScreen} from '../utils';
-import level from "./screen-level";
-import {questions} from '../data/data';
+import AbstractView from "../abstract-view";
 
 /**
  * Шаблон экрана приветствия
  */
-const welcome = `
+export default class WelcomeScreen extends AbstractView {
+  constructor() {
+    super();
+  }
+
+  get template() {
+    return `
   <section class="main main--welcome">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
     <button class="main-play">Начать игру</button>
@@ -16,12 +20,14 @@ const welcome = `
       Удачи!
     </p>
   </section>`;
+  }
 
-const element = createElementFromString(welcome);
+  onStartClick() {}
 
-element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
-  evt.preventDefault();
-  showScreen(level(questions[0]));
-});
-
-export default element;
+  bind() {
+    this.element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      this.onStartClick();
+    });
+  }
+}
