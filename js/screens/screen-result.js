@@ -1,44 +1,37 @@
-import {gameState, questions} from "../data/data";
-import {createElementFromString, showScreen} from '../utils';
-import {printResults} from '../data/results';
-import level from "./screen-level";
+import AbstractView from "../abstract-view";
 
 /**
- * Шаблон экрана уровня игры с текущим вопросом и состоянием игры
- * Имеет два режима в зависимости от типа вопроса:
- * 1. выбор артиста по заданной мелодии
- * 2. выбор всех мелодий определённого жанра
- * @param {Object} screenType - Тип экрана в случае победы или проигрыша
- * @param {Array} stats - Статистика результатов набранных баллов
- * @param {Object} result - Результат игрока
- * @return {Node}
+ * Шаблон экрана результата игры
  */
-export default (screenType, stats, result) => {
-  const stat = printResults(stats, result);
-  const resultScreen = `
+export default class ResultScreen extends AbstractView {
+  /** @constructor
+   * @param {Object} screenType - Тип экрана в случае победы или проигрыша
+   * @param {Object} stats - Результат игрока
+   */
+  constructor(screenType, stats) {
+    super();
+    this.screenType = screenType;
+    this.stats = stats;
+    this.title = this.screenType.titles[Math.floor(Math.random() * this.screenType.titles.length)];
+  }
+
+  get template() {
+    return `
   <section class="main main--result">
     <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
-    <h2 class="title">${screenType.title[Math.floor(Math.random() * screenType.title.length)]}</h2>
-    <div class="main-stat">${stat.result}</div>
-    <span class="main-comparison">${stat.comparison}</span>
-    <span role="button" tabindex="0" class="main-replay">${screenType.button}</span>
+    <h2 class="title">${this.title}</h2>
+    <div class="main-stat">${this.stats.message}</div>
+    <span class="main-comparison">${this.stats.comparison}</span>
+    <span role="button" tabindex="0" class="main-replay">${this.screenType.button}</span>
   </section>`;
+  }
 
-  const element = createElementFromString(resultScreen);
+  onRestartClick() {}
 
-  element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    // Пока что сброс стейта делается так
-    gameState.question = 0;
-    gameState.answers = [];
-    gameState.user = {
-      points: 0,
-      fastPoints: 0,
-      restAttempts: 3,
-      restTime: 300
-    };
-    showScreen(level(questions[gameState.question]));
-  });
-
-  return element;
-};
+  bind() {
+    this.element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      this.onRestartClick();
+    });
+  }
+}

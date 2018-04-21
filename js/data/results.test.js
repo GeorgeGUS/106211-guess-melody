@@ -10,16 +10,16 @@ describe(`Printing results`, () => {
 
   it(`should return right message on success`, () => {
     const userResult = {
-      points: 9,
-      restAttempts: 2,
+      answers: Array(10).fill({success: true, time: 30}),
+      points: 10,
+      restAttempts: 3,
       restTime: 95
     };
-    assert.deepEqual(printResults([1, 2, 3, 4, 5, 6, 7, 8, 10], userResult), {
-      result: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
-      <br>вы&nbsp;набрали 9&nbsp;баллов (0&nbsp;быстрых),
-      <br>совершив 1&nbsp;ошибку`,
-      comparison: `Вы заняли 2-ое место из 10. Это лучше чем у 80% игроков.`
-
+    assert.deepEqual(printResults([1, 2, 3, 4, 5, 6, 7, 8, 9], userResult), {
+      message: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
+      <br>вы&nbsp;набрали 10&nbsp;баллов (0&nbsp;быстрых),
+      <br>совершив 0&nbsp;ошибок`,
+      comparison: `Вы заняли 1-ое место из 10. Это лучше чем у 90% игроков.`
     });
   });
 
@@ -29,7 +29,7 @@ describe(`Printing results`, () => {
       restAttempts: 2,
       restTime: 0
     }), {
-      result: `Время вышло! Вы не успели отгадать все мелодии.`,
+      message: `Время вышло! Вы не успели отгадать все мелодии.`,
       comparison: ``
     });
 
@@ -38,7 +38,7 @@ describe(`Printing results`, () => {
       restAttempts: 0,
       restTime: 120
     }), {
-      result: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
+      message: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
       comparison: ``
     });
   });
