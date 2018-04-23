@@ -3,7 +3,7 @@ import AbstractView from "../abstract-view";
 /**
  * Шаблон музыкального плеера
  */
-export default class Player extends AbstractView {
+export default class PlayerView extends AbstractView {
   /** @constructor
    * @param {Object} melody - мелодия для воспроизведения
    * @param {string} [attrs] - дополнительные атрибуты аудио, например autoplay

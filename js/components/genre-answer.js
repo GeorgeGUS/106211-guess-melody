@@ -1,10 +1,10 @@
 import AbstractView from "../abstract-view";
-import Player from './player';
+import PlayerView from './player';
 
 /**
  * Шаблон вариантов мелодий по жанру
  */
-export default class GenreAnswer extends AbstractView {
+export default class GenreAnswerView extends AbstractView {
   /** @constructor
    * @param {Array} melodies - Массив мелодий из данных
    * @param {number} id - Номер мелодии из списка вопросов
@@ -14,13 +14,13 @@ export default class GenreAnswer extends AbstractView {
     super();
     this.id = id;
     this.inputName = inputName;
-    this.player = new Player(melodies[id]).element;
+    this.player = new PlayerView(melodies[id]).element;
   }
 
   get template() {
     return `
     <div class="genre-answer">
-      <!--Player-->
+      <!--PlayerView-->
       <input type="checkbox" name="${this.inputName}" value="${this.id}" id="a-${this.id}">
       <label class="genre-answer-check" for="a-${this.id}"></label>
     </div>`;

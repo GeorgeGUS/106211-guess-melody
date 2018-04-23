@@ -1,7 +1,7 @@
 import AbstractView from "../abstract-view";
-import Player from '../components/player';
-import ArtistAnswer from '../components/artist-answer';
-import GenreAnswer from '../components/genre-answer';
+import PlayerView from './player';
+import ArtistAnswerView from './artist-answer';
+import GenreAnswerView from './genre-answer';
 
 /** @enum Genres - Ассоциация жанра с его описанием */
 const Genres = {
@@ -22,17 +22,15 @@ const INPUT_NAME = `answer`;
  * 1. выбор артиста по заданной мелодии
  * 2. выбор всех мелодий определённого жанра
  */
-export default class LevelScreen extends AbstractView {
+export default class LevelView extends AbstractView {
   /** @constructor
    * @param {Object} melodies - Список мелодий с сервера
    * @param {Object} question - Текущий вопрос
-   * @param {Object} levelState - Текущee состояние игры
    */
-  constructor(melodies, question, levelState) {
+  constructor(melodies, question) {
     super();
     this.melodies = melodies;
     this.question = question;
-    this.levelState = levelState;
   }
 
   get template() {
@@ -46,29 +44,25 @@ export default class LevelScreen extends AbstractView {
       btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
     }
 
-    return `
-    <section class="main main--level main--level-${this.question.type}">
-      <!--levelState-->      
+    return `   
       <div class="main-wrap">
         ${title}
-        <!--Player-->
+        <!--PlayerView-->
         <form class="${formClass}">
           <!--Answers-->
           ${btn}
         </form>
-      </div>
-    </section>`;
+      </div>`;
   }
 
   onAnswer() {}
 
   bind() {
-    this.element.insertAdjacentElement(`afterbegin`, this.levelState.element);
     const form = this.element.querySelector(`form`);
     const variants = Array.from(this.question.variants);
     const answerList = document.createDocumentFragment();
     for (const id of variants) {
-      answerList.appendChild(this.question.type === `artist` ? new ArtistAnswer(this.melodies, id, INPUT_NAME).element : new GenreAnswer(this.melodies, id, INPUT_NAME).element);
+      answerList.appendChild(this.question.type === `artist` ? new ArtistAnswerView(this.melodies, id, INPUT_NAME).element : new GenreAnswerView(this.melodies, id, INPUT_NAME).element);
     }
 
     form.insertBefore(answerList, form.firstChild);
@@ -76,7 +70,8 @@ export default class LevelScreen extends AbstractView {
     const inputs = Array.from(form[INPUT_NAME]);
 
     if (this.question.type === `artist`) {
-      this.element.querySelector(`.main-wrap`).insertBefore(new Player(this.melodies[this.question.answer], `autoplay`).element, form);
+      const player = new PlayerView(this.melodies[this.question.answer], `autoplay`).element;
+      this.element.insertBefore(player, form);
 
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
         evt.preventDefault();

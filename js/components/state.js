@@ -12,7 +12,7 @@ const addFirstZero = (num) => (`0${Math.floor(num)}`).slice(-2);
  * @param {Object} state - Текущее состояние игры
  * @return {Node}
  */
-export default class LevelState extends AbstractView {
+export default class StateView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;

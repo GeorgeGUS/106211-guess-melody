@@ -2,13 +2,13 @@ import {INITIAL_STATE, melodies, questions, result, statistics} from "./data/dat
 import {showScreen} from './utils';
 import {calcScoring} from './data/scoring';
 import {printResults} from "./data/results";
-import LevelState from './components/level-state';
-import LevelScreen from "./screens/screen-level";
-import ResultScreen from './screens/screen-result';
+import StateView from './components/state';
+import LevelView from "./components/level";
+import ResultScreen from './screens/result-screen';
 
-let gameState = Object.assign({}, INITIAL_STATE);
+let gameState = INITIAL_STATE;
 let answers = [];
-let levelState = new LevelState(gameState);
+let levelState = new StateView(gameState);
 
 /**
  * Запись новых свойств в объект состояния игры
@@ -44,8 +44,8 @@ const setGameState = (verdict, time) => {
 export const startNewGame = () => {
   gameState = Object.assign({}, INITIAL_STATE);
   answers = [];
-  levelState = new LevelState(gameState);
-  const levelScreen = new LevelScreen(melodies, questions[0], levelState);
+  levelState = new StateView(gameState);
+  const levelScreen = new LevelView(melodies, questions[0], levelState);
   showScreen(levelScreen.element);
 
   levelScreen.onAnswer = (question, answer) => {
@@ -59,7 +59,7 @@ export const startNewGame = () => {
  * @return {Object} levelScreen
  */
 const updateScreen = (state) => {
-  const levelScreen = new LevelScreen(melodies, questions[gameState.question], new LevelState(state));
+  const levelScreen = new LevelView(melodies, questions[gameState.question], new StateView(state));
   showScreen(levelScreen.element);
   return levelScreen;
 };
