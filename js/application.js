@@ -26,7 +26,7 @@ export default class Application {
   }
 
   static showStats(screenType, stats) {
-    const statistics = new ResultScreen(screenType, stats);
-    showScreen(statistics.element);
+    const resultScreen = new ResultScreen(screenType, stats);
+    showScreen(resultScreen.element);
   }
 }

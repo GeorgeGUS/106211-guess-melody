@@ -33,7 +33,7 @@ export default class Timer {
     if (this.onTick) {
       this.onTick(this.time);
     }
-    this.time--;
+    --this.time;
     return this.time >= 0 ? this.time : this.stop();
   }
 }

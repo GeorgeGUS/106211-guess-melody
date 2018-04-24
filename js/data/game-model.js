@@ -1,19 +1,29 @@
-import {INITIAL_STATE, melodies, questions, result, statistics} from "../data/data";
+import {INITIAL_STATE, melodies, questions, statistics} from "../data/data";
 import {calcScoring} from "./scoring";
-
-const getQuestion = (state) => questions[state.question];
+import {printResults} from "./results";
 
 export default class GameModel {
   constructor() {
     this.restart();
+    this.questions = questions;
+    this.statistics = statistics;
+  }
+
+  get state() {
+    return this._state;
   }
 
   get melodies() {
     return melodies;
   }
 
-  get state() {
-    return this._state;
+  getQuestion(state) {
+    return this.questions[state.question];
+  }
+
+  get rightGenreAnswers() {
+    const question = this.getQuestion(this._state);
+    return Array.from(question.variants).filter((i) => melodies[i].genre === question.answer);
   }
 
   updateStateProp(prop) {
@@ -31,16 +41,24 @@ export default class GameModel {
     if (!verdict && this._state.restAttempts >= 0) {
       this.updateStateProp({restAttempts: this._state.restAttempts - 1});
     }
-    const points = calcScoring(this._state.this._answers, this._state.restAttempts);
+    const points = calcScoring(this._answers, this._state.restAttempts);
     this.updateStateProp({points});
   }
 
-  nextQuestion() {
+  hasNextQuestion() {
+    return this._state.points !== null && this._state.question < this.questions.length - 1;
+  }
 
+  nextQuestion() {
+    this.updateStateProp({question: this._state.question + 1});
   }
 
   getCurrentQuestion() {
-    return getQuestion(this._state);
+    return this.getQuestion(this._state);
+  }
+
+  getStats() {
+    return printResults(this._state.statistics, this._state);
   }
 
   restart() {
@@ -48,7 +66,13 @@ export default class GameModel {
     this._answers = [];
   }
 
-  tick() {
-    this.updateStateProp({restTime: this._state.restTime - 1});
+  updateStats() {
+    if (this._state.points !== null) {
+      this.statistics.push(this._state.points);
+    }
+  }
+
+  setRestTime(restTime) {
+    this.updateStateProp({restTime});
   }
 }

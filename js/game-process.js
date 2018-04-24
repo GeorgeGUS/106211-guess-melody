@@ -1,3 +1,5 @@
+/*
+
 import {INITIAL_STATE, melodies, questions, result, statistics} from "./data/data";
 import {showScreen} from './utils';
 import {calcScoring} from './data/scoring';
@@ -10,10 +12,10 @@ let gameState = INITIAL_STATE;
 let answers = [];
 let levelState = new StateView(gameState);
 
-/**
+/!**
  * Запись новых свойств в объект состояния игры
  * @param {Object} prop - обновляемое свойство
- */
+ *!/
 const updateGameStateProp = (prop) => {
   if (gameState.hasOwnProperty(Object.keys(prop))) {
     gameState = Object.assign({}, gameState, prop);
@@ -22,11 +24,11 @@ const updateGameStateProp = (prop) => {
   }
 };
 
-/**
+/!**
  * Задать новое состояние игры
  * @param {boolean} verdict - заключение о правильности ответа
  * @param {number} time - текущее время, заданное таймером
- */
+ *!/
 const setGameState = (verdict, time) => {
   answers.push({success: verdict, time});
   updateGameStateProp({answers});
@@ -38,9 +40,9 @@ const setGameState = (verdict, time) => {
   updateGameStateProp({points});
 };
 
-/**
+/!**
  * Запустить игру с первого вопроса
- */
+ *!/
 export const startNewGame = () => {
   gameState = Object.assign({}, INITIAL_STATE);
   answers = [];
@@ -53,20 +55,20 @@ export const startNewGame = () => {
   };
 };
 
-/**
+/!**
  * Обновить экран
  * @param {Object} state
  * @return {Object} levelScreen
- */
+ *!/
 const updateScreen = (state) => {
   const levelScreen = new LevelView(melodies, questions[gameState.question], new StateView(state));
   showScreen(levelScreen.element);
   return levelScreen;
 };
 
-/**
+/!**
  * Показать экран со следующим вопросом
- */
+ *!/
 const showNextLevel = () => {
   updateGameStateProp({question: ++gameState.question});
   const levelScreen = updateScreen(gameState);
@@ -75,9 +77,9 @@ const showNextLevel = () => {
   };
 };
 
-/**
+/!**
  * Показать экран с результатом игры
- */
+ *!/
 const showResultScreen = () => {
   const stats = printResults(statistics, gameState);
   const resultScreen = gameState.points === null ?
@@ -95,11 +97,11 @@ const showResultScreen = () => {
   };
 };
 
-/**
+/!**
  * Обработка ответов пользователя
  * @param {Object} question - Текущий вопрос
  * @param {number|Array} answer - Ответ пользователя в виде числа или массива
- */
+ *!/
 const processUserAnswer = (question, answer) => {
   let verdict = false;
   if (question.type === `artist`) {
@@ -117,3 +119,4 @@ const processUserAnswer = (question, answer) => {
     showResultScreen();
   }
 };
+*/

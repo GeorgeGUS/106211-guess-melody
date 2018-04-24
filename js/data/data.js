@@ -19,17 +19,6 @@ export const numerals = {
   seconds: [`секунду`, `секунды`, `секунд`]
 };
 
-export const result = {
-  WIN: {
-    titles: [`Вы - настоящий меломан!`, `Мне бы вашу удачу!`],
-    button: `Сыграть ещё раз`
-  },
-  LOSE: {
-    titles: [`Увы и ах!`, `Какая жалость!`, `Это фиаско!`],
-    button: `Попробовать ещё раз`
-  }
-};
-
 export const melodies = [
   {
     artist: `Пелагея`,
