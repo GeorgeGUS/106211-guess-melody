@@ -50,12 +50,17 @@ export default class PlayerView extends AbstractView {
     /**
      * Меняет внешний вид кнопки на паузу, если музыка играет
      */
-    const togglePlayerBtnIfPlaying = () => {
+    const togglePlayerBtnOnPlaying = () => {
       playerBtn.classList.remove(`player-control--play`);
       playerBtn.classList.add(`player-control--pause`);
     };
+    const togglePlayerBtnOnEnded = () => {
+      playerBtn.classList.remove(`player-control--pause`);
+      playerBtn.classList.add(`player-control--play`);
+    };
 
-    audio.addEventListener(`playing`, togglePlayerBtnIfPlaying);
+    audio.addEventListener(`playing`, togglePlayerBtnOnPlaying);
+    audio.addEventListener(`ended`, togglePlayerBtnOnEnded);
     playerBtn.addEventListener(`click`, playerBtnHolder);
   }
 }

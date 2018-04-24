@@ -1,4 +1,5 @@
 import AbstractView from "../abstract-view";
+import Application from "../application";
 
 /**
  * Шаблон экрана результата игры
@@ -23,12 +24,10 @@ export default class ResultScreen extends AbstractView {
   </section>`;
   }
 
-  onRestartClick() {}
-
   bind() {
     this.element.querySelector(`.main-replay`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this.onRestartClick();
+      Application.showGame();
     });
   }
 }

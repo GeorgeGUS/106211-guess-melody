@@ -7,11 +7,12 @@ import Timer from '../data/timer';
 export default class GameScreen {
   constructor(model) {
     this.model = model;
-    this.time = this.model.state.time;
-    this.timer = new Timer(this.time, this.updateStateTime.bind(this), this.stopGame);
+    this.time = this.model.state.restTime;
+    this.timer = new Timer(this.time,
+        this.onTimerTick.bind(this),
+        this.onTimerEnd.bind(this));
     this.levelState = new StateView(this.model.state);
     this.levelView = new LevelView(this.model.melodies, this.model.getCurrentQuestion());
-
 
     this.root = document.createElement(`section`);
     this.root.classList.add(`main`, `main--level`);
@@ -23,14 +24,17 @@ export default class GameScreen {
     return this.root;
   }
 
-  stopGame() {
-    this.timer.stop();
-    this.showResultScreen();
+  startGame() {
+    this.showFirstQuestion();
+    this.timer.start();
   }
 
-  startGame() {
-    this.showNextLevel();
-    this.timer.start();
+  onTimerTick(time) {
+    this.updateStateTime(time);
+  }
+
+  onTimerEnd() {
+    this.showResultScreen();
   }
 
   processUserAnswer(question, answer) {
@@ -45,7 +49,7 @@ export default class GameScreen {
     this.model.setGameState(verdict, Math.floor(Math.random() * 60));
 
     if (this.model.hasNextQuestion()) {
-      this.showNextLevel();
+      this.showNextQuestion();
     } else {
       this.showResultScreen();
     }
@@ -67,12 +71,15 @@ export default class GameScreen {
     this.levelView = view;
   }
 
-  showNextLevel() {
+  showFirstQuestion() {
+    this.levelView.onAnswer = this.processUserAnswer.bind(this);
+  }
+
+  showNextQuestion() {
     this.updateStateView();
-    const nextLevel = new LevelView(this.model.melodies, this.model.getCurrentQuestion());
-    nextLevel.onAnswer = this.processUserAnswer.bind(this);
-    this.model.nextQuestion();
-    this.updateLevelView(nextLevel);
+    const nextQuestion = new LevelView(this.model.melodies, this.model.getNextQuestion());
+    nextQuestion.onAnswer = this.processUserAnswer.bind(this);
+    this.updateLevelView(nextQuestion);
   }
 
   showResultScreen() {

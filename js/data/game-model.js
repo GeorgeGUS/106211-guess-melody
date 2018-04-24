@@ -5,16 +5,13 @@ import {printResults} from "./results";
 export default class GameModel {
   constructor() {
     this.restart();
-    this.questions = questions;
     this.statistics = statistics;
+    this.melodies = melodies;
+    this.questions = questions;
   }
 
   get state() {
     return this._state;
-  }
-
-  get melodies() {
-    return melodies;
   }
 
   getQuestion(state) {
@@ -23,7 +20,7 @@ export default class GameModel {
 
   get rightGenreAnswers() {
     const question = this.getQuestion(this._state);
-    return Array.from(question.variants).filter((i) => melodies[i].genre === question.answer);
+    return Array.from(question.variants).filter((i) => this.melodies[i].genre === question.answer);
   }
 
   updateStateProp(prop) {
@@ -49,21 +46,23 @@ export default class GameModel {
     return this._state.points !== null && this._state.question < this.questions.length - 1;
   }
 
-  nextQuestion() {
-    this.updateStateProp({question: this._state.question + 1});
-  }
-
   getCurrentQuestion() {
     return this.getQuestion(this._state);
   }
 
+  getNextQuestion() {
+    this.updateStateProp({question: this._state.question + 1});
+    return this.getCurrentQuestion();
+  }
+
   getStats() {
-    return printResults(this._state.statistics, this._state);
+    return printResults(this.statistics, this._state);
   }
 
   restart() {
-    this._state = INITIAL_STATE;
     this._answers = [];
+    this._state = INITIAL_STATE;
+    this.updateStateProp({answers: this._answers});
   }
 
   updateStats() {

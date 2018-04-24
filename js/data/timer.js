@@ -26,14 +26,13 @@ export default class Timer {
     if (this.onEnd) {
       this.onEnd();
     }
-    return null;
   }
 
   tick() {
+    --this.time;
     if (this.onTick) {
       this.onTick(this.time);
     }
-    --this.time;
-    return this.time >= 0 ? this.time : this.stop();
+    return this.time > 0 ? this.time : this.stop();
   }
 }

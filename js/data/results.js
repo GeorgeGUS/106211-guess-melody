@@ -1,4 +1,15 @@
-import {INITIAL_STATE, numerals} from "./data";
+const INITIAL_STATE = {
+  time: 300,
+  attempts: 3
+};
+
+export const numerals = {
+  mistakes: [`ошибку`, `ошибки`, `ошибок`],
+  points: [`балл`, `балла`, `баллов`],
+  fastPoints: [`быстрый`, `быстрых`, `быстрых`],
+  minutes: [`минуту`, `минуты`, `минут`],
+  seconds: [`секунду`, `секунды`, `секунд`]
+};
 
 const ResultTypeTitles = {
   win: [`Вы - настоящий меломан!`, `Мне бы вашу удачу!`],
@@ -59,7 +70,8 @@ const createResultMessage = (result) => {
   const minutes = declOfNum(Math.floor(userTime / 60), numerals.minutes);
   const seconds = declOfNum(Math.floor(userTime % 60), numerals.seconds);
   const points = declOfNum(result.points, numerals.points);
-  const fastPoints = declOfNum(result.answers.filter((a) => a.time < 30).length, numerals.fastPoints);
+  const fastPoints = declOfNum(result.answers
+      .filter((a) => a.success && a.time < 30).length, numerals.fastPoints);
   const mistakes = declOfNum(INITIAL_STATE.attempts - result.restAttempts, numerals.mistakes);
 
   return `За&nbsp;${minutes} и ${seconds}
@@ -89,7 +101,7 @@ export const printResults = (allUserResults, userResult) => {
   if (userResult.restTime === 0) {
     return {
       title: getTitleFor(`lose`),
-      message: `Время вышло! Вы не успели отгадать все мелодии.`,
+      message: `Время вышло! Вы не успели<br> отгадать все мелодии.`,
       comparison: ``,
       button: `Попробовать ещё раз`
     };
