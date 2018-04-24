@@ -41,18 +41,20 @@ export default class PlayerView extends AbstractView {
         audio.play();
       } else {
         audio.pause();
-        audio.currentTime = 0; // Сброс плеера на начало (временно здесь, пока не придумаю сброс при переключении экранов)
       }
-      playerBtn.classList.toggle(`player-control--play`);
-      playerBtn.classList.toggle(`player-control--pause`);
+      const btn = evt.target;
+      if (btn.classList.contains(`player-control--pause`)) {
+        btn.classList.remove(`player-control--pause`);
+        btn.classList.add(`player-control--play`);
+      }
     };
 
     /**
      * Меняет внешний вид кнопки на паузу, если музыка играет
      */
     const togglePlayerBtnOnPlaying = () => {
-      playerBtn.classList.remove(`player-control--play`);
-      playerBtn.classList.add(`player-control--pause`);
+      playerBtn.classList.toggle(`player-control--play`);
+      playerBtn.classList.toggle(`player-control--pause`);
     };
     const togglePlayerBtnOnEnded = () => {
       playerBtn.classList.remove(`player-control--pause`);

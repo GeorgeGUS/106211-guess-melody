@@ -31,6 +31,7 @@ export default class LevelView extends AbstractView {
     super();
     this.melodies = melodies;
     this.question = question;
+    this.nowPlaying = null;
   }
 
   get template() {
@@ -57,6 +58,19 @@ export default class LevelView extends AbstractView {
 
   onAnswer() {}
 
+  togglePlayers(evt) {
+    if (this.nowPlaying && this.nowPlaying !== evt.target) {
+      this.nowPlaying.pause();
+      this.nowPlaying.currentTime = 0;
+      const btn = this.nowPlaying.nextElementSibling;
+      if (btn.classList.contains(`player-control--pause`)) {
+        btn.classList.remove(`player-control--pause`);
+        btn.classList.add(`player-control--play`);
+      }
+    }
+    this.nowPlaying = evt.target;
+  }
+
   bind() {
     const form = this.element.querySelector(`form`);
     const variants = Array.from(this.question.variants);
@@ -80,12 +94,15 @@ export default class LevelView extends AbstractView {
       }));
 
     } else {
+      const firstPlayer = form.firstChild;
+      firstPlayer.querySelector(`audio`).setAttribute(`autoplay`, ``);
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
         evt.preventDefault();
         // Кнопка отправки отключена, пока не выбран хоть один ответ
         form.querySelector(`.genre-answer-send`).disabled = !inputs.some((answer) => answer.checked);
       }));
 
+      form.addEventListener(`playing`, this.togglePlayers, true);
       form.addEventListener(`submit`, (evt) => {
         evt.preventDefault();
         const answer = inputs.filter((i) => i.checked).map((i) => Number(i.value));
