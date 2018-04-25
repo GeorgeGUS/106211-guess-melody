@@ -96,6 +96,7 @@ export default class GameScreen {
   }
 
   showResultScreen() {
+    this.timer.stop();
     const stats = this.model.getStats();
     this.model.updateStats();
     Application.showStats(stats);

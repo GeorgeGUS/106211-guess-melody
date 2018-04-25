@@ -27,6 +27,10 @@ export default class Timer {
 
   stop() {
     clearInterval(this.interval);
+  }
+
+  stopOnEnd() {
+    this.stop();
     if (this.onEnd) {
       this.onEnd();
     }
@@ -37,6 +41,6 @@ export default class Timer {
     if (this.onTick) {
       this.onTick(this.time);
     }
-    return this.time > 0 ? this.time : this.stop();
+    return this.time > 0 ? this.time : this.stopOnEnd();
   }
 }
