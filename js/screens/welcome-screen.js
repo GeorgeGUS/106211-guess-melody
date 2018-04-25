@@ -1,4 +1,5 @@
 import AbstractView from "../abstract-view";
+import Application from "../application";
 
 /**
  * Шаблон экрана приветствия
@@ -22,12 +23,11 @@ export default class WelcomeScreen extends AbstractView {
   </section>`;
   }
 
-  onStartClick() {}
 
   bind() {
     this.element.querySelector(`.main-play`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this.onStartClick();
+      Application.showGame();
     });
   }
 }

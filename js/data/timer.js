@@ -15,6 +15,10 @@ export default class Timer {
     }
   }
 
+  get currentTime() {
+    return this.time;
+  }
+
   start() {
     clearInterval(this.interval);
     this.time = this._startTime;
@@ -23,17 +27,20 @@ export default class Timer {
 
   stop() {
     clearInterval(this.interval);
+  }
+
+  stopOnEnd() {
+    this.stop();
     if (this.onEnd) {
       this.onEnd();
     }
-    return null;
   }
 
   tick() {
+    --this.time;
     if (this.onTick) {
       this.onTick(this.time);
     }
-    this.time--;
-    return this.time >= 0 ? this.time : this.stop();
+    return this.time > 0 ? this.time : this.stopOnEnd();
   }
 }
