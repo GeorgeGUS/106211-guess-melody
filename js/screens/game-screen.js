@@ -11,6 +11,8 @@ export default class GameScreen {
     this.timer = new Timer(this.time,
         this.onTimerTick.bind(this),
         this.onTimerEnd.bind(this));
+    this._startTime = this.timer.currentTime;
+
     this.levelState = new StateView(this.model.state);
     this.levelView = new LevelView(this.model.melodies, this.model.getCurrentQuestion());
 
@@ -18,6 +20,11 @@ export default class GameScreen {
     this.root.classList.add(`main`, `main--level`);
     this.root.appendChild(this.levelState.element);
     this.root.appendChild(this.levelView.element);
+
+
+    this.levelView.onLevelLoaded = () => {
+      this._startTime = this.timer.currentTime;
+    };
   }
 
   get element() {
@@ -37,6 +44,10 @@ export default class GameScreen {
     this.showResultScreen();
   }
 
+  setStartTimeForAnswer() {
+    this._startTime = this.timer.currentTime;
+  }
+
   processUserAnswer(question, answer) {
     let verdict = false;
     if (question.type === `artist`) {
@@ -45,8 +56,8 @@ export default class GameScreen {
       verdict = this.model.rightGenreAnswers.every((a, i) => a === answer[i]);
     }
 
-    // TODO: Не забыть заменить рандомное время на возвращаемое таймером
-    this.model.setGameState(verdict, Math.floor(Math.random() * 60));
+    const timeForAnswer = this._startTime - this.timer.currentTime;
+    this.model.setGameState(verdict, timeForAnswer);
 
     if (this.model.hasNextQuestion()) {
       this.showNextQuestion();
@@ -72,12 +83,14 @@ export default class GameScreen {
   }
 
   showFirstQuestion() {
+    this.levelView.onLevelLoaded = this.setStartTimeForAnswer.bind(this);
     this.levelView.onAnswer = this.processUserAnswer.bind(this);
   }
 
   showNextQuestion() {
     this.updateStateView();
     const nextQuestion = new LevelView(this.model.melodies, this.model.getNextQuestion());
+    nextQuestion.onLevelLoaded = this.setStartTimeForAnswer.bind(this);
     nextQuestion.onAnswer = this.processUserAnswer.bind(this);
     this.updateLevelView(nextQuestion);
   }

@@ -58,6 +58,8 @@ export default class LevelView extends AbstractView {
 
   onAnswer() {}
 
+  onLevelLoaded() {}
+
   togglePlayers(evt) {
     if (this.nowPlaying && this.nowPlaying !== evt.target) {
       this.nowPlaying.pause();
@@ -109,5 +111,7 @@ export default class LevelView extends AbstractView {
         this.onAnswer(this.question, answer);
       });
     }
+
+    this.onLevelLoaded();
   }
 }

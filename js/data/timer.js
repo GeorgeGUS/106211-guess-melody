@@ -15,6 +15,10 @@ export default class Timer {
     }
   }
 
+  get currentTime() {
+    return this.time;
+  }
+
   start() {
     clearInterval(this.interval);
     this.time = this._startTime;
