@@ -16,6 +16,7 @@ export default class StateView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;
+    this.timeFinished = this.state.restTime >= 30 ? `` : `timer-value--finished`;
   }
 
   get template() {
@@ -27,7 +28,7 @@ export default class StateView extends AbstractView {
           class="timer-line"
           style="filter: url(..#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>        
       </svg>
-      <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
+      <div class="timer-value ${this.timeFinished}" xmlns="http://www.w3.org/1999/xhtml">
         <span class="timer-value-mins">${addFirstZero(this.state.restTime / 60)}</span><!--
         --><span class="timer-value-dots">:</span><!--
         --><span class="timer-value-secs">${addFirstZero(this.state.restTime % 60)}</span>

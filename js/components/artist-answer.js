@@ -5,15 +5,16 @@ import AbstractView from "../abstract-view";
  */
 export default class ArtistAnswerView extends AbstractView {
   /** @constructor
-   * @param {Array} melodies - Массив мелодий из данных
+   * @param {Array} melody - Массив мелодий из данных
    * @param {number} id - Номер мелодии из списка вопросов
    * @param {string} inputName - Имя элемента ввода
    */
-  constructor(melodies, id, inputName) {
+  constructor(melody, id, inputName) {
     super();
+    this.melody = melody;
     this.id = id;
+    this.image = this.melody.image;
     this.inputName = inputName;
-    this.melody = melodies[id];
   }
 
   get template() {
@@ -21,8 +22,8 @@ export default class ArtistAnswerView extends AbstractView {
     <div class="main-answer-wrapper">
       <input class="main-answer-r" type="radio" id="answer-${this.id}" name="${this.inputName}" value="${this.id}"/>
       <label class="main-answer" for="answer-${this.id}">
-        <img class="main-answer-preview" src="${this.melody.image}"
-             alt="${this.melody.artist}" width="134" height="134">
+        <img class="main-answer-preview" src="${this.image.url}"
+             alt="${this.melody.artist}" width="${this.image.width}" height="${this.image.height}">
         ${this.melody.artist}
       </label>
     </div>`;

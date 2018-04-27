@@ -3,16 +3,6 @@ import PlayerView from './player';
 import ArtistAnswerView from './artist-answer';
 import GenreAnswerView from './genre-answer';
 
-/** @enum Genres - Ассоциация жанра с его описанием */
-const Genres = {
-  'Rock': `инди-рок`,
-  'Jazz': `джаз`,
-  'Country': `кантри`,
-  'Pop': `поп-музыка`,
-  'Folk': `фолк`,
-  'R&B': `R&B`,
-  'Electronic': `электронная музыка`
-};
 /** @const INPUT_NAME - Имя поля для идентификации */
 const INPUT_NAME = `answer`;
 
@@ -24,23 +14,21 @@ const INPUT_NAME = `answer`;
  */
 export default class LevelView extends AbstractView {
   /** @constructor
-   * @param {Object} melodies - Список мелодий с сервера
    * @param {Object} question - Текущий вопрос
    */
-  constructor(melodies, question) {
+  constructor(question) {
     super();
-    this.melodies = melodies;
     this.question = question;
     this.nowPlaying = null;
   }
 
   get template() {
-    let title = `<h2 class="title main-title">Кто исполняет эту песню?</h2>`;
+    let title = `<h2 class="title main-title">${this.question.title}</h2>`;
     let formClass = `main-list`;
     let btn = ``;
 
     if (this.question.type === `genre`) {
-      title = `<h2 class="title" align="center">Выберите все треки<br> в жанре ${Genres[this.question.answer]}</h2>`;
+      title = `<h2 class="title" align="center">${this.question.title}</h2>`;
       formClass = `genre`;
       btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
     }
@@ -77,16 +65,16 @@ export default class LevelView extends AbstractView {
     const form = this.element.querySelector(`form`);
     const variants = Array.from(this.question.variants);
     const answerList = document.createDocumentFragment();
-    for (const id of variants) {
-      answerList.appendChild(this.question.type === `artist` ? new ArtistAnswerView(this.melodies, id, INPUT_NAME).element : new GenreAnswerView(this.melodies, id, INPUT_NAME).element);
-    }
+    variants.forEach((variant, id) => {
+      answerList.appendChild(this.question.type === `artist` ? new ArtistAnswerView(variant, id, INPUT_NAME).element : new GenreAnswerView(variant, id, INPUT_NAME).element);
+    });
 
     form.insertBefore(answerList, form.firstChild);
 
     const inputs = Array.from(form[INPUT_NAME]);
 
     if (this.question.type === `artist`) {
-      const player = new PlayerView(this.melodies[this.question.answer], `autoplay`).element;
+      const player = new PlayerView(this.question.melody, `autoplay`).element;
       this.element.insertBefore(player, form);
 
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {

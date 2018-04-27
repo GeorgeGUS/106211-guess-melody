@@ -1,26 +1,50 @@
-import {INITIAL_STATE, melodies, questions, statistics} from "../data/data";
+import {INITIAL_STATE, statistics} from "../data/data";
 import {calcScoring} from "./scoring";
 import {printResults} from "./results";
 
+export const adaptData = (data) => {
+  return data.map((question) => {
+    let adapted;
+    if (question.type === `artist`) {
+      const variants = [];
+      for (const it of question.answers) {
+        variants.push({
+          artist: it.title,
+          image: it.image
+        });
+      }
+      const answer = question.answers.findIndex((a) => a.isCorrect);
+      adapted = {
+        type: question.type,
+        title: question.question,
+        variants,
+        melody: question.src,
+        answer
+      };
+    } else if (question.type === `genre`) {
+      const variants = question.answers.map((a, i) => {
+        return Object.assign({}, a, {id: i});
+      });
+      adapted = {
+        type: question.type,
+        title: question.question,
+        variants,
+        answer: question.genre
+      };
+    }
+    return adapted;
+  });
+};
+
 export default class GameModel {
-  constructor() {
+  constructor(questions) {
     this.restart();
     this.statistics = statistics;
-    this.melodies = melodies;
     this.questions = questions;
   }
 
   get state() {
     return this._state;
-  }
-
-  getQuestion(state) {
-    return this.questions[state.question];
-  }
-
-  get rightGenreAnswers() {
-    const question = this.getQuestion(this._state);
-    return Array.from(question.variants).filter((i) => this.melodies[i].genre === question.answer);
   }
 
   updateStateProp(prop) {
@@ -47,7 +71,7 @@ export default class GameModel {
   }
 
   getCurrentQuestion() {
-    return this.getQuestion(this._state);
+    return this.questions[this._state.question];
   }
 
   getNextQuestion() {
