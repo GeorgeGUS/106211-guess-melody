@@ -1,5 +1,5 @@
 import WelcomeScreen from './screens/welcome-screen';
-import GameModel, {adaptData} from './data/game-model';
+import GameModel from './data/game-model';
 import GameScreen from './screens/game-screen';
 import ResultScreen from './screens/result-screen';
 import LoadingScreen from "./screens/loading-screen";
@@ -24,7 +24,40 @@ const checkResponseStatus = (response) => {
   }
 };
 
-let questions;
+const adaptData = (data) => {
+  return data.map((question) => {
+    let adapted;
+    if (question.type === `artist`) {
+      const variants = [];
+      for (const it of question.answers) {
+        variants.push({
+          artist: it.title,
+          image: it.image
+        });
+      }
+      adapted = {
+        type: question.type,
+        title: question.question,
+        variants,
+        melody: question.src,
+        answer: question.answers.findIndex((a) => a.isCorrect)
+      };
+    } else if (question.type === `genre`) {
+      const variants = question.answers.map((a, i) => {
+        return Object.assign({}, a, {id: i});
+      });
+      adapted = {
+        type: question.type,
+        title: question.question,
+        variants,
+        answer: question.genre
+      };
+    }
+    return adapted;
+  });
+};
+
+let questions = [];
 
 /** Класс для управления экранами игры */
 export default class Application {

@@ -88,7 +88,6 @@ export default class LevelView extends AbstractView {
       firstPlayer.querySelector(`audio`).setAttribute(`autoplay`, ``);
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
         evt.preventDefault();
-        // Кнопка отправки отключена, пока не выбран хоть один ответ
         form.querySelector(`.genre-answer-send`).disabled = !inputs.some((answer) => answer.checked);
       }));
 

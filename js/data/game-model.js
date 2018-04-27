@@ -1,40 +1,15 @@
-import {INITIAL_STATE, statistics} from "../data/data";
 import {calcScoring} from "./scoring";
 import {printResults} from "./results";
 
-export const adaptData = (data) => {
-  return data.map((question) => {
-    let adapted;
-    if (question.type === `artist`) {
-      const variants = [];
-      for (const it of question.answers) {
-        variants.push({
-          artist: it.title,
-          image: it.image
-        });
-      }
-      const answer = question.answers.findIndex((a) => a.isCorrect);
-      adapted = {
-        type: question.type,
-        title: question.question,
-        variants,
-        melody: question.src,
-        answer
-      };
-    } else if (question.type === `genre`) {
-      const variants = question.answers.map((a, i) => {
-        return Object.assign({}, a, {id: i});
-      });
-      adapted = {
-        type: question.type,
-        title: question.question,
-        variants,
-        answer: question.genre
-      };
-    }
-    return adapted;
-  });
-};
+const INITIAL_STATE = Object.freeze({
+  question: 0,
+  answers: [],
+  points: 0,
+  restAttempts: 3,
+  restTime: 300
+});
+
+const statistics = [1, 4, 5, 8];
 
 export default class GameModel {
   constructor(questions) {
