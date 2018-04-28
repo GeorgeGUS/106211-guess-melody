@@ -26,7 +26,7 @@ export default class StateView extends AbstractView {
         <circle
           cx="390" cy="390" r="370"
           class="timer-line"
-          style="filter: url(..#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>        
+          style="filter: url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>        
       </svg>
       <div class="timer-value ${this.timeFinished}" xmlns="http://www.w3.org/1999/xhtml">
         <span class="timer-value-mins">${addFirstZero(this.state.restTime / 60)}</span><!--

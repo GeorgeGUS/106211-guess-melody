@@ -30,7 +30,6 @@ export default class PlayerView extends AbstractView {
   bind() {
     const audio = this.element.querySelector(`audio`);
     const playerBtn = this.element.querySelector(`.player-control`);
-    let playPromise;
 
     /**
      * Обработчик нажатия кнопки воспроизведения/паузы
@@ -39,13 +38,9 @@ export default class PlayerView extends AbstractView {
     const playerBtnHolder = (evt) => {
       evt.preventDefault();
       if (audio.paused) {
-        playPromise = audio.play();
-      } else if (playPromise !== `undefined`) {
-        playPromise
-            .then(() => audio.pause())
-            .catch((error) => {
-              throw new Error(error);
-            });
+        audio.play();
+      } else {
+        audio.pause();
       }
       const btn = evt.target;
       if (btn.classList.contains(`player-control--pause`)) {

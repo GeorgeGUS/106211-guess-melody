@@ -28,13 +28,12 @@ const adaptData = (data) => {
   return data.map((question) => {
     let adapted;
     if (question.type === `artist`) {
-      const variants = [];
-      for (const it of question.answers) {
-        variants.push({
+      const variants = question.answers.map((it) => {
+        return {
           artist: it.title,
           image: it.image
-        });
-      }
+        };
+      });
       adapted = {
         type: question.type,
         title: question.question,
