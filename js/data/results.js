@@ -1,4 +1,4 @@
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   time: 300,
   attempts: 3
 };

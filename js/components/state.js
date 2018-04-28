@@ -1,4 +1,5 @@
 import AbstractView from "../abstract-view";
+import {INITIAL_STATE} from "../data/results";
 
 /**
  * Добавление первого нуля перед натуральным однозначным числом
@@ -16,6 +17,7 @@ export default class StateView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;
+    this._initialTime = INITIAL_STATE.time;
     this.timeFinished = this.state.restTime >= 30 ? `` : `timer-value--finished`;
   }
 
@@ -37,5 +39,23 @@ export default class StateView extends AbstractView {
         ${new Array(this.state.restAttempts).fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`).join(``)}
       </div>
     </div>`;
+  }
+
+  getStroke(radius, restTime) {
+    const strokeDashArray = 2 * Math.PI * radius;
+    const timeToStrokeRatio = restTime / this._initialTime * strokeDashArray;
+    const strokeDashOffset = strokeDashArray - timeToStrokeRatio;
+    return {
+      array: strokeDashArray,
+      offset: strokeDashOffset
+    };
+  }
+
+  bind() {
+    const indicator = this.element.querySelector(`.timer-line`);
+    const circleRadius = indicator.attributes.r.value;
+    const stroke = this.getStroke(circleRadius, this.state.restTime);
+    indicator.setAttribute(`stroke-dasharray`, `${stroke.array}`);
+    indicator.setAttribute(`stroke-dashoffset`, `${stroke.offset}`);
   }
 }
