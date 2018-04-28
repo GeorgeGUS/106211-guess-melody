@@ -14,7 +14,7 @@ export default class GameScreen {
     this._startTime = this.timer.currentTime;
 
     this.levelState = new StateView(this.model.state);
-    this.levelView = new LevelView(this.model.melodies, this.model.getCurrentQuestion());
+    this.levelView = new LevelView(this.model.getCurrentQuestion());
 
     this.root = document.createElement(`section`);
     this.root.classList.add(`main`, `main--level`);
@@ -53,7 +53,10 @@ export default class GameScreen {
     if (question.type === `artist`) {
       verdict = answer === question.answer;
     } else {
-      verdict = this.model.rightGenreAnswers.every((a, i) => a === answer[i]);
+      const rightAnswers = Array.from(question.variants).filter((variant) => {
+        return variant.genre === question.answer;
+      }).map((rightAnswer) => rightAnswer.id);
+      verdict = rightAnswers.join() === answer.join();
     }
 
     const timeForAnswer = this._startTime - this.timer.currentTime;
@@ -89,7 +92,7 @@ export default class GameScreen {
 
   showNextQuestion() {
     this.updateStateView();
-    const nextQuestion = new LevelView(this.model.melodies, this.model.getNextQuestion());
+    const nextQuestion = new LevelView(this.model.getNextQuestion());
     nextQuestion.onLevelLoaded = this.setStartTimeForAnswer.bind(this);
     nextQuestion.onAnswer = this.processUserAnswer.bind(this);
     this.updateLevelView(nextQuestion);

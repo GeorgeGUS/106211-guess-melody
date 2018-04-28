@@ -18,7 +18,7 @@ export default class PlayerView extends AbstractView {
     return `
     <div class="player-wrapper">
       <div class="player">
-        <audio src="${this.melody.src}" ${this.attrs}></audio>
+        <audio src="${this.melody}" ${this.attrs} preload="auto"></audio>
         <button class="player-control player-control--play"></button>
         <div class="player-track">
           <span class="player-status"></span>
