@@ -91,6 +91,7 @@ const createResultMessage = (result) => {
 export const printResults = (allUserResults, userResult) => {
   if (userResult.restAttempts === 0) {
     return {
+      isWin: false,
       title: getTitleFor(`lose`),
       message: `У вас закончились все попытки.<br> Ничего, повезёт в следующий раз!`,
       comparison: ``,
@@ -100,6 +101,7 @@ export const printResults = (allUserResults, userResult) => {
 
   if (userResult.restTime === 0) {
     return {
+      isWin: false,
       title: getTitleFor(`lose`),
       message: `Время вышло! Вы не успели<br> отгадать все мелодии.`,
       comparison: ``,
@@ -110,6 +112,8 @@ export const printResults = (allUserResults, userResult) => {
   const [position, total, percent] = getResults(allUserResults, userResult.points);
 
   return {
+    isWin: true,
+    points: userResult.points,
     title: getTitleFor(`win`),
     message: createResultMessage(userResult),
     comparison: `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`,

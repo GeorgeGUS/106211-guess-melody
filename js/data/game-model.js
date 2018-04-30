@@ -9,12 +9,9 @@ const INITIAL_STATE = Object.freeze({
   restTime: 300
 });
 
-const statistics = [1, 4, 5, 8];
-
 export default class GameModel {
   constructor(questions) {
     this.restart();
-    this.statistics = statistics;
     this.questions = questions;
   }
 
@@ -54,20 +51,15 @@ export default class GameModel {
     return this.getCurrentQuestion();
   }
 
-  getStats() {
-    return printResults(this.statistics, this._state);
+  static getStats(state, data) {
+    let stats = data ? data.map((it) => it.points) : [];
+    return printResults(stats, state);
   }
 
   restart() {
     this._answers = [];
     this._state = INITIAL_STATE;
     this.updateStateProp({answers: this._answers});
-  }
-
-  updateStats() {
-    if (this._state.points !== null) {
-      this.statistics.push(this._state.points);
-    }
   }
 
   setRestTime(restTime) {

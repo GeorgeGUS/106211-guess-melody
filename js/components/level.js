@@ -52,7 +52,7 @@ export default class LevelView extends AbstractView {
     if (this.nowPlaying && this.nowPlaying !== evt.target) {
       this.nowPlaying.pause();
       this.nowPlaying.currentTime = 0;
-      const btn = this.nowPlaying.nextElementSibling;
+      const btn = this.nowPlaying.parentNode.querySelector(`.player-control`);
       if (btn.classList.contains(`player-control--pause`)) {
         btn.classList.remove(`player-control--pause`);
         btn.classList.add(`player-control--play`);

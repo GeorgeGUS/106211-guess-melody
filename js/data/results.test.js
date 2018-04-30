@@ -21,6 +21,19 @@ describe(`Printing results`, () => {
       <br>совершив 0&nbsp;ошибок`);
 
     assert.equal(result.comparison, `Вы заняли 1-ое место из 10. Это лучше чем у 90% игроков.`);
+
+    const firstResult = printResults([], {
+      answers: Array(10).fill({success: true, time: 30}),
+      points: 10,
+      restAttempts: 3,
+      restTime: 95
+    });
+
+    assert.equal(firstResult.message, `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд
+      <br>вы&nbsp;набрали 10&nbsp;баллов (0&nbsp;быстрых),
+      <br>совершив 0&nbsp;ошибок`);
+
+    assert.equal(firstResult.comparison, `Вы заняли 1-ое место из 1. Это лучше чем у 100% игроков.`);
   });
 
   it(`should return right message on lose`, () => {
