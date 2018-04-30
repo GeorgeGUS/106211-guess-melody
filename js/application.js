@@ -39,7 +39,6 @@ export default class Application {
 
   static showStats(state) {
     let stats = GameModel.getStats(state);
-    const resultScreen = new ResultScreen(stats);
     if (stats.isWin) {
       showScreen(new LoadingScreen().element);
       Loader.saveStats({points: stats.points})
@@ -48,7 +47,7 @@ export default class Application {
           .then((newstats) => showScreen(new ResultScreen(newstats).element))
           .catch(Application.showError);
     } else {
-      showScreen(resultScreen.element);
+      showScreen(new ResultScreen(stats).element);
     }
   }
 

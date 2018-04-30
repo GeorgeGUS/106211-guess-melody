@@ -33,7 +33,7 @@ describe(`Printing results`, () => {
       <br>вы&nbsp;набрали 10&nbsp;баллов (0&nbsp;быстрых),
       <br>совершив 0&nbsp;ошибок`);
 
-    assert.equal(firstResult.comparison, `Вы заняли 1-ое место из 1. Это лучше чем у 100% игроков.`);
+    assert.equal(firstResult.comparison, `Вы заняли 1-ое место из 1. Это лучше чем у 0% игроков.`);
   });
 
   it(`should return right message on lose`, () => {
