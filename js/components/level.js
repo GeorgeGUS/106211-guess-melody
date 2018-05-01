@@ -23,19 +23,20 @@ export default class LevelView extends AbstractView {
   }
 
   get template() {
-    let title = `<h2 class="title main-title">${this.question.title}</h2>`;
+    let titleClass = `main-title`;
     let formClass = `main-list`;
     let btn = ``;
 
     if (this.question.type === `genre`) {
-      title = `<h2 class="title" align="center">${this.question.title}</h2>`;
+      titleClass = ``;
       formClass = `genre`;
       btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
     }
 
     return `   
       <div class="main-wrap">
-        ${title}
+        <div class="current-level">1/10</div>
+        <h2 class="title ${titleClass}">${this.question.title}</h2>
         <!--PlayerView-->
         <form class="${formClass}">
           <!--Answers-->
