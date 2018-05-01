@@ -3,9 +3,14 @@ import {getResults, printResults} from './results';
 
 describe(`Printing results`, () => {
   it(`should return right results on success`, () => {
-    assert.deepEqual(getResults([1], 2), [1, 2, 50]);
-    assert.deepEqual(getResults([20], 19), [2, 2, 0]);
-    assert.deepEqual(getResults([4, 5, 8, 20], 15), [2, 5, 60]);
+    assert.deepEqual(getResults([{points: 1, time: 20}], 2, 10), [1, 2, 50]);
+    assert.deepEqual(getResults([{points: 20, time: 120}], 19, 120), [2, 2, 0]);
+    assert.deepEqual(getResults([
+      {points: 12, time: 200},
+      {points: 20, time: 120},
+      {points: 20, time: 110},
+      {points: 16, time: 120}
+    ], 20, 100), [1, 5, 80]);
   });
 
   it(`should return right message on success`, () => {

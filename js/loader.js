@@ -3,7 +3,7 @@ import LoadingScreen from "./screens/loading-screen";
 import {showScreen} from "./application";
 
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
-const APP_ID = 127367005;
+const APP_ID = 127367003;
 
 const checkResponseStatus = (response) => {
   if (response.ok) {

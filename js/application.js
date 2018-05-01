@@ -38,10 +38,14 @@ export default class Application {
   }
 
   static showStats(state) {
-    let stats = GameModel.getStats(state);
+    const stats = GameModel.getStats(state);
     if (stats.isWin) {
       showScreen(new LoadingScreen().element);
-      Loader.saveStats({points: stats.points})
+      const result = {
+        points: stats.points,
+        time: stats.time
+      };
+      Loader.saveStats(result)
           .then(() => Loader.loadStats())
           .then((data) => GameModel.getStats(state, data))
           .then((newstats) => showScreen(new ResultScreen(newstats).element))

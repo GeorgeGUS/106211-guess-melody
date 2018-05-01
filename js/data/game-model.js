@@ -52,7 +52,7 @@ export default class GameModel {
   }
 
   static getStats(state, data) {
-    let stats = data ? data.map((it) => it.points).slice(0, data.length - 1) : [];
+    const stats = data ? data.slice(0, data.length - 1) : [];
     return printResults(stats, state);
   }
 

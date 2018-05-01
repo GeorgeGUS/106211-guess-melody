@@ -20,15 +20,21 @@ const ResultTypeTitles = {
  * Получение результов игрока
  * @param {Array} allUserResults - Массив результатов игр других игроков
  * @param {number} points - количество заработанных очков
+ * @param {number} time - время, потраченное на игру
  * @return {Array} - Массив с результами игрока
  */
-export const getResults = (allUserResults, points) => {
-  const stats = [...allUserResults];
-  stats.push(points);
-  stats.sort((a, b) => a - b);
+export const getResults = (allUserResults, points, time) => {
+  const currentResult = {points, time};
+  const stats = [...allUserResults, currentResult];
+  stats.sort((a, b) => {
+    if (a.points === b.points) {
+      return b.time - a.time;
+    }
+    return a.points - b.points;
+  });
 
   const userCount = stats.length;
-  const userPosition = userCount - stats.indexOf(points);
+  const userPosition = userCount - stats.indexOf(currentResult);
   const userPercent = Math.round((userCount - userPosition) / userCount * 100);
 
   return [userPosition, userCount, userPercent];
@@ -61,12 +67,19 @@ const declOfNum = (n, titles) => {
 };
 
 /**
+ * Получение времени игрока, потраченного на игру
+ * @param {Object} result - Объект результата игрока
+ * @return {number} - Общее время игрока
+ */
+const getUserTime = (result) => INITIAL_STATE.time - result.restTime;
+
+/**
  * Вывод сообщения со статистикой игрока
  * @param {Object} result - Объект результата игрока
  * @return {string} - Сообщение о результате игрока
  */
 const createResultMessage = (result) => {
-  const userTime = INITIAL_STATE.time - result.restTime;
+  const userTime = getUserTime(result);
   const minutes = declOfNum(Math.floor(userTime / 60), numerals.minutes);
   const seconds = declOfNum(Math.floor(userTime % 60), numerals.seconds);
   const points = declOfNum(result.points, numerals.points);
@@ -109,11 +122,13 @@ export const printResults = (allUserResults, userResult) => {
     };
   }
 
-  const [position, total, percent] = getResults(allUserResults, userResult.points);
+  const spentTime = getUserTime(userResult);
+  const [position, total, percent] = getResults(allUserResults, userResult.points, spentTime);
 
   return {
     isWin: true,
     points: userResult.points,
+    time: spentTime,
     title: getTitleFor(`win`),
     message: createResultMessage(userResult),
     comparison: `Вы заняли ${position}-ое место из ${total}. Это лучше чем у ${percent}% игроков.`,
