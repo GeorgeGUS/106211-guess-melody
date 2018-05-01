@@ -15,10 +15,12 @@ const INPUT_NAME = `answer`;
 export default class LevelView extends AbstractView {
   /** @constructor
    * @param {Object} question - Текущий вопрос
+   * @param {string} progress - Показатель прогресса
    */
-  constructor(question) {
+  constructor(question, progress) {
     super();
     this.question = question;
+    this.progress = progress;
     this.nowPlaying = null;
   }
 
@@ -35,7 +37,7 @@ export default class LevelView extends AbstractView {
 
     return `   
       <div class="main-wrap">
-        <div class="current-level">1/10</div>
+        <div class="progress">${this.progress}</div>
         <h2 class="title ${titleClass}">${this.question.title}</h2>
         <!--PlayerView-->
         <form class="${formClass}">

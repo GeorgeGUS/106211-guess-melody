@@ -47,6 +47,10 @@ export default class GameModel {
     return this.questions[this._state.question];
   }
 
+  getProgress() {
+    return `${this._state.question + 1}/${this.questions.length}`;
+  }
+
   getNextQuestion() {
     this.updateStateProp({question: this._state.question + 1});
     return this.getCurrentQuestion();
