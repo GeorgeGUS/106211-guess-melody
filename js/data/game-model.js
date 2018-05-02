@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {calcScoring} from "./scoring";
 import {printResults} from "./results";
 
@@ -9,12 +10,9 @@ const INITIAL_STATE = Object.freeze({
   restTime: 300
 });
 
-const statistics = [1, 4, 5, 8];
-
 export default class GameModel {
   constructor(questions) {
     this.restart();
-    this.statistics = statistics;
     this.questions = questions;
   }
 
@@ -49,25 +47,25 @@ export default class GameModel {
     return this.questions[this._state.question];
   }
 
+  getProgress() {
+    return `${this._state.question + 1}/${this.questions.length}`;
+  }
+
   getNextQuestion() {
     this.updateStateProp({question: this._state.question + 1});
     return this.getCurrentQuestion();
   }
 
-  getStats() {
-    return printResults(this.statistics, this._state);
+  static getStats(state, data) {
+    console.log(data);
+    const stats = data ? data.slice(0, data.length - 1) : [];
+    return printResults(stats, state);
   }
 
   restart() {
     this._answers = [];
     this._state = INITIAL_STATE;
     this.updateStateProp({answers: this._answers});
-  }
-
-  updateStats() {
-    if (this._state.points !== null) {
-      this.statistics.push(this._state.points);
-    }
   }
 
   setRestTime(restTime) {

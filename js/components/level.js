@@ -15,27 +15,30 @@ const INPUT_NAME = `answer`;
 export default class LevelView extends AbstractView {
   /** @constructor
    * @param {Object} question - Текущий вопрос
+   * @param {string} progress - Показатель прогресса
    */
-  constructor(question) {
+  constructor(question, progress) {
     super();
     this.question = question;
+    this.progress = progress;
     this.nowPlaying = null;
   }
 
   get template() {
-    let title = `<h2 class="title main-title">${this.question.title}</h2>`;
+    let titleClass = `main-title`;
     let formClass = `main-list`;
     let btn = ``;
 
     if (this.question.type === `genre`) {
-      title = `<h2 class="title" align="center">${this.question.title}</h2>`;
+      titleClass = ``;
       formClass = `genre`;
       btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
     }
 
     return `   
       <div class="main-wrap">
-        ${title}
+        <div class="progress">${this.progress}</div>
+        <h2 class="title ${titleClass}">${this.question.title}</h2>
         <!--PlayerView-->
         <form class="${formClass}">
           <!--Answers-->
@@ -52,7 +55,7 @@ export default class LevelView extends AbstractView {
     if (this.nowPlaying && this.nowPlaying !== evt.target) {
       this.nowPlaying.pause();
       this.nowPlaying.currentTime = 0;
-      const btn = this.nowPlaying.nextElementSibling;
+      const btn = this.nowPlaying.parentNode.querySelector(`.player-control`);
       if (btn.classList.contains(`player-control--pause`)) {
         btn.classList.remove(`player-control--pause`);
         btn.classList.add(`player-control--play`);
