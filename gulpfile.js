@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 const del = require('del');
@@ -12,6 +13,12 @@ const minify = require('gulp-csso');
 const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
 const rollup = require('gulp-better-rollup');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+const babel = require('rollup-plugin-babel');
+const uglifyjs = require('uglify-es');
+const composer = require('gulp-uglify/composer');
+const jsminify = composer(uglifyjs, console);
 const sourcemaps = require('gulp-sourcemaps');
 const mocha = require('gulp-mocha');
 
@@ -42,7 +49,23 @@ gulp.task('scripts', function () {
   return gulp.src('js/main.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
-    .pipe(rollup({}, 'iife'))
+    .pipe(rollup({
+      plugins: [
+        resolve({browser: true}),
+        commonjs(),
+        babel({
+          babelrc: false,
+          exclude: 'node_modules/**',
+          presets: [
+            ['env', {modules: false}]
+          ],
+          plugins: [
+            'external-helpers',
+          ]
+        })
+      ]
+    }, 'iife'))
+    .pipe(jsminify())
     .pipe(sourcemaps.write(''))
     .pipe(gulp.dest('build/js'));
 });
