@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = 127367003;
 
@@ -14,7 +12,7 @@ const checkResponseStatus = (response) => {
 };
 
 const adaptData = (data) => {
-  return data.map((question, iq) => {
+  return data.map((question) => {
     let adapted;
     if (question.type === `artist`) {
       const variants = question.answers.map((it) => {
@@ -30,8 +28,6 @@ const adaptData = (data) => {
         melody: question.src,
         answer: question.answers.findIndex((a) => a.isCorrect)
       };
-      // TODO: remove
-      console.log(`${iq + 1}. Right answer - ${adapted.answer}`);
 
     } else if (question.type === `genre`) {
       const variants = question.answers.map((a, i) => {
@@ -43,11 +39,6 @@ const adaptData = (data) => {
         variants,
         answer: question.genre
       };
-      // TODO: remove
-      const rightAnswers = Array.from(adapted.variants).filter((variant) => {
-        return variant.genre === adapted.answer;
-      }).map((rightAnswer) => rightAnswer.id);
-      console.log(`${iq + 1}. Right answer - ${rightAnswers.join()}`);
 
     }
     return adapted;
