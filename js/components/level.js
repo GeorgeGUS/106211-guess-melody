@@ -2,6 +2,7 @@ import AbstractView from "../abstract-view";
 import PlayerView from './player';
 import ArtistAnswerView from './artist-answer';
 import GenreAnswerView from './genre-answer';
+import {QuestionType} from "../loader";
 
 /** @const INPUT_NAME - Имя поля для идентификации */
 const INPUT_NAME = `answer`;
@@ -21,7 +22,7 @@ export default class LevelView extends AbstractView {
     super();
     this.question = question;
     this.progress = progress;
-    this.nowPlaying = null;
+    this._nowPlaying = null;
   }
 
   get template() {
@@ -29,7 +30,7 @@ export default class LevelView extends AbstractView {
     let formClass = `main-list`;
     let btn = ``;
 
-    if (this.question.type === `genre`) {
+    if (this.question.type === QuestionType.GENRE) {
       titleClass = ``;
       formClass = `genre`;
       btn = `<button class="genre-answer-send" type="submit" disabled>Ответить</button>`;
@@ -52,16 +53,16 @@ export default class LevelView extends AbstractView {
   onLevelLoaded() {}
 
   togglePlayers(evt) {
-    if (this.nowPlaying && this.nowPlaying !== evt.target) {
-      this.nowPlaying.pause();
-      this.nowPlaying.currentTime = 0;
-      const btn = this.nowPlaying.parentNode.querySelector(`.player-control`);
+    if (this._nowPlaying && this._nowPlaying !== evt.target) {
+      this._nowPlaying.pause();
+      this._nowPlaying.currentTime = 0;
+      const btn = this._nowPlaying.parentNode.querySelector(`.player-control`);
       if (btn.classList.contains(`player-control--pause`)) {
         btn.classList.remove(`player-control--pause`);
         btn.classList.add(`player-control--play`);
       }
     }
-    this.nowPlaying = evt.target;
+    this._nowPlaying = evt.target;
   }
 
   bind() {
@@ -69,14 +70,14 @@ export default class LevelView extends AbstractView {
     const variants = Array.from(this.question.variants);
     const answerList = document.createDocumentFragment();
     variants.forEach((variant, id) => {
-      answerList.appendChild(this.question.type === `artist` ? new ArtistAnswerView(variant, id, INPUT_NAME).element : new GenreAnswerView(variant, id, INPUT_NAME).element);
+      answerList.appendChild(this.question.type === QuestionType.ARTIST ? new ArtistAnswerView(variant, id, INPUT_NAME).element : new GenreAnswerView(variant, id, INPUT_NAME).element);
     });
 
     form.insertBefore(answerList, form.firstChild);
 
     const inputs = Array.from(form[INPUT_NAME]);
 
-    if (this.question.type === `artist`) {
+    if (this.question.type === QuestionType.ARTIST) {
       const player = new PlayerView(this.question.melody, `autoplay`).element;
       this.element.insertBefore(player, form);
 
@@ -86,7 +87,7 @@ export default class LevelView extends AbstractView {
         this.onAnswer(this.question, answer);
       }));
 
-    } else {
+    } else if (this.question.type === QuestionType.GENRE) {
       const firstPlayer = form.firstChild;
       firstPlayer.querySelector(`audio`).setAttribute(`autoplay`, ``);
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {

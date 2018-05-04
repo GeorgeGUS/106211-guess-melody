@@ -12,7 +12,7 @@ export default class PlayerView extends AbstractView {
     super();
     this.melody = melody;
     this.attrs = attrs;
-    this.canPlay = false;
+    this._canPlay = false;
   }
 
   get template() {
@@ -40,7 +40,7 @@ export default class PlayerView extends AbstractView {
      */
     const playerBtnHolder = (evt) => {
       evt.preventDefault();
-      if (audio.paused && this.canPlay) {
+      if (audio.paused && this._canPlay) {
         audio.play();
       } else {
         audio.pause();
@@ -53,7 +53,7 @@ export default class PlayerView extends AbstractView {
     };
 
     const onCanPlay = () => {
-      this.canPlay = true;
+      this._canPlay = true;
     };
     /**
      * Меняет внешний вид кнопки на паузу, если музыка играет

@@ -48,6 +48,7 @@ export default class Application {
         points: stats.points,
         time: stats.time
       };
+
       try {
         await Loader.saveStats(result);
         const data = await Loader.loadStats();
@@ -56,6 +57,7 @@ export default class Application {
       } catch (e) {
         Application.showError(e);
       }
+
     } else {
       showScreen(new ResultScreen(stats).element);
     }

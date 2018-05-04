@@ -2,8 +2,11 @@ import StateView from '../components/state';
 import LevelView from '../components/level';
 import Application from '../application';
 import Timer from '../data/timer';
+import {QuestionType} from "../loader";
 
-
+/**
+ * Модуль управления игровыми экранами
+ */
 export default class GameScreen {
   constructor(model) {
     this.model = model;
@@ -50,9 +53,9 @@ export default class GameScreen {
 
   processUserAnswer(question, answer) {
     let verdict = false;
-    if (question.type === `artist`) {
+    if (question.type === QuestionType.ARTIST) {
       verdict = answer === question.answer;
-    } else {
+    } else if (question.type === QuestionType.GENRE) {
       const rightAnswers = Array.from(question.variants).filter((variant) => {
         return variant.genre === question.answer;
       }).map((rightAnswer) => rightAnswer.id);

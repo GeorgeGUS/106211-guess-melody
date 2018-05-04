@@ -1,6 +1,11 @@
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = 127367003;
 
+export const QuestionType = {
+  ARTIST: `artist`,
+  GENRE: `genre`
+};
+
 const checkResponseStatus = (response) => {
   if (response.ok) {
     return response;
@@ -14,7 +19,7 @@ const checkResponseStatus = (response) => {
 const adaptData = (data) => {
   return data.map((question) => {
     let adapted;
-    if (question.type === `artist`) {
+    if (question.type === QuestionType.ARTIST) {
       const variants = question.answers.map((it) => {
         return {
           artist: it.title,
@@ -29,7 +34,7 @@ const adaptData = (data) => {
         answer: question.answers.findIndex((a) => a.isCorrect)
       };
 
-    } else if (question.type === `genre`) {
+    } else if (question.type === QuestionType.GENRE) {
       const variants = question.answers.map((a, i) => {
         return Object.assign({}, a, {id: i});
       });
@@ -39,7 +44,6 @@ const adaptData = (data) => {
         variants,
         answer: question.genre
       };
-
     }
     return adapted;
   });
