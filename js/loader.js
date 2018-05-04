@@ -15,8 +15,6 @@ const checkResponseStatus = (response) => {
   }
 };
 
-const toJSON = (response) => response.json();
-
 const adaptData = (data) => {
   return data.map((question, iq) => {
     let adapted;
@@ -59,22 +57,20 @@ const adaptData = (data) => {
 };
 
 export default class Loader {
-  static loadData() {
-    const loader = new LoadingScreen().element;
-    return fetch(`${SERVER_URL}/questions`)
-        .then(checkResponseStatus)
-        .then(showScreen(loader))
-        .then(toJSON)
-        .then(adaptData);
+  static async loadData() {
+    const response = await fetch(`${SERVER_URL}/questions`);
+    checkResponseStatus(response);
+    const responseData = await response.json();
+    return adaptData(responseData);
   }
 
-  static loadStats() {
-    return fetch(`${SERVER_URL}/stats/${APP_ID}`)
-        .then(checkResponseStatus)
-        .then(toJSON);
+  static async loadStats() {
+    const response = await fetch(`${SERVER_URL}/stats/${APP_ID}`);
+    checkResponseStatus(response);
+    return await response.json();
   }
 
-  static saveStats(data) {
+  static async saveStats(data) {
     const settings = {
       body: JSON.stringify(data),
       headers: {
@@ -82,6 +78,7 @@ export default class Loader {
       },
       method: `POST`
     };
-    return fetch(`${SERVER_URL}/stats/${APP_ID}`, settings).then(checkResponseStatus);
+    const response = await fetch(`${SERVER_URL}/stats/${APP_ID}`, settings);
+    return checkResponseStatus(response);
   }
 }
