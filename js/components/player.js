@@ -19,7 +19,7 @@ export default class PlayerView extends AbstractView {
     return `
     <div class="player-wrapper">
       <div class="player">
-        <audio ${this.attrs}>
+        <audio ${this.attrs} preload="auto">
           <source src="${this.melody}" type="audio/mpeg">
         </audio>
         <button class="player-control player-control--play"></button>
@@ -67,7 +67,7 @@ export default class PlayerView extends AbstractView {
       playerBtn.classList.add(`player-control--play`);
     };
 
-    audio.addEventListener(`canplaythrough`, onCanPlay);
+    audio.addEventListener(`canplay`, onCanPlay);
     audio.addEventListener(`playing`, togglePlayerBtnOnPlaying);
     audio.addEventListener(`ended`, togglePlayerBtnOnEnded);
     playerBtn.addEventListener(`click`, playerBtnHolder);
