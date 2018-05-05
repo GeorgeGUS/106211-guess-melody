@@ -5,12 +5,14 @@ import AbstractView from "../abstract-view";
  */
 export default class PlayerView extends AbstractView {
   /** @constructor
-   * @param {Object} melody - мелодия для воспроизведения
+   * @param {HTMLElement} audio - мелодия для воспроизведения
    * @param {string} [attrs] - дополнительные атрибуты аудио, например autoplay
    */
-  constructor(melody, attrs = ``) {
+  constructor(audio, attrs = ``) {
     super();
-    this.melody = melody;
+    this.audio = audio;
+    console.dir(audio);
+    console.log(audio);
     this.attrs = attrs;
     this._canPlay = false;
   }
@@ -19,9 +21,7 @@ export default class PlayerView extends AbstractView {
     return `
     <div class="player-wrapper">
       <div class="player">
-        <audio ${this.attrs} preload="auto">
-          <source src="${this.melody}" type="audio/mpeg">
-        </audio>
+        <!--audio-->
         <button class="player-control player-control--play"></button>
         <div class="player-track">
           <span class="player-status"></span>
@@ -29,8 +29,14 @@ export default class PlayerView extends AbstractView {
       </div>
     </div>`;
   }
+  // <audio ${this.attrs} preload="auto">
+  //     <source src="${this.melody}" type="audio/mpeg">
+  // </audio>
 
   bind() {
+    const player = this.element.querySelector(`.player`);
+    player.appendChild(this.audio);
+    // const audio = player.insertAdjacentElement(`afterbegin`, this.audio);
     const audio = this.element.querySelector(`audio`);
     const playerBtn = this.element.querySelector(`.player-control`);
 

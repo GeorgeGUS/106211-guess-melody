@@ -10,13 +10,18 @@ const INITIAL_STATE = Object.freeze({
 });
 
 export default class GameModel {
-  constructor(questions) {
+  constructor(questions, resources) {
     this.restart();
     this.questions = questions;
+    this._resources = resources;
   }
 
   get state() {
     return this._state;
+  }
+
+  get resources() {
+    return this._resources;
   }
 
   updateStateProp(prop) {

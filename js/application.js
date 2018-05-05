@@ -16,29 +16,30 @@ export const showScreen = (element) => {
 };
 
 let questions = [];
+let resources = [];
 
 /** Класс для управления экранами игры */
 export default class Application {
   static async start() {
     try {
       Application.showLoading();
-      const data = await Loader.loadData();
-      const resources = Loader.preloadResources(data);
-      Application.showWelcome({data, resources});
+      questions = await Loader.loadData();
+      resources = await Loader.preloadResources(questions);
+      Application.showWelcome();
     } catch (e) {
       Application.showError(e);
     }
   }
 
-  static showWelcome(data) {
-    questions = data;
+  static showWelcome() {
     console.log(questions);
+    console.log(resources);
     const welcome = new WelcomeScreen();
     showScreen(welcome.element);
   }
 
   static showGame() {
-    const gameScreen = new GameScreen(new GameModel(questions.data));
+    const gameScreen = new GameScreen(new GameModel(questions, resources));
     showScreen(gameScreen.element);
     gameScreen.startGame();
   }

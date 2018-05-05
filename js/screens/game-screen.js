@@ -17,7 +17,7 @@ export default class GameScreen {
     this._startTime = this.timer.currentTime;
 
     this.levelState = new StateView(this.model.state);
-    this.levelView = new LevelView(this.model.getCurrentQuestion(), this.model.getProgress());
+    this.levelView = new LevelView(this.model.getCurrentQuestion(), this.model.getProgress(), this.model.resources);
 
     this.root = document.createElement(`section`);
     this.root.classList.add(`main`, `main--level`);
@@ -96,7 +96,7 @@ export default class GameScreen {
   showNextQuestion() {
     this.updateStateView();
     const nextQuestion = new LevelView(this.model.getNextQuestion(),
-        this.model.getProgress());
+        this.model.getProgress(), this.model.resources);
     nextQuestion.onLevelLoaded = this.setStartTimeForAnswer.bind(this);
     nextQuestion.onAnswer = this.processUserAnswer.bind(this);
     this.updateLevelView(nextQuestion);

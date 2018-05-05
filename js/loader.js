@@ -1,3 +1,5 @@
+import Storage from "./storage";
+
 const SERVER_URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = 127367003;
 
@@ -55,34 +57,12 @@ const adaptData = (data) => {
 };
 
 const getUrlsByType = (data, type) => {
-  return JSON.stringify(data).match(new RegExp(`"${type}":".+?"`, `g`))
-      .map((it) => JSON.parse(`{${it}}`)[type]);
-};
-
-const preloadSong = (src) => {
-  return new Promise((resolve, reject) => {
-    const audio = new Audio();
-    try {
-      audio.addEventListener(`canplaythrough`, resolve);
-    } catch (e) {
-      reject(e);
-    }
-
-    audio.src = src;
-    audio.load();
-  });
-};
-
-const preloadImage = (src) => {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    try {
-      image.addEventListener(`load`, resolve);
-    } catch (e) {
-      reject(e);
-    }
-    image.src = src;
-  });
+  const sortedUrls = JSON.stringify(data).match(new RegExp(`"${type}":".+?"`, `g`));
+  const urls = new Set();
+  for (const it of sortedUrls) {
+    urls.add(JSON.parse(`{${it}}`)[type]);
+  }
+  return Array.from(urls);
 };
 
 export default class Loader {
@@ -94,11 +74,13 @@ export default class Loader {
   }
 
   static async preloadResources(data) {
-    const songs = getUrlsByType(data, SourseType.AUDIO).map((src) => preloadSong(src));
-    const images = getUrlsByType(data, SourseType.IMAGE).map((src) => preloadImage(src));
-    const elements = [...songs, ...images];
-    // console.log(elements);
-    return await Promise.all(elements);
+    const storage = new Storage();
+    const images = getUrlsByType(data, SourseType.IMAGE).map((src) => storage.preloadImage(src));
+    const songs = getUrlsByType(data, SourseType.AUDIO).map((src) => storage.preloadSong(src));
+    const promises = [...images, ...songs];
+    await Promise.all(promises);
+
+    return storage.storedElements;
   }
 
   static async loadStats() {

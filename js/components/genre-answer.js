@@ -6,16 +6,15 @@ import PlayerView from './player';
  */
 export default class GenreAnswerView extends AbstractView {
   /** @constructor
-   * @param {Array} melody - Массив мелодий из данных
+   * @param {Object} variant - Массив мелодий из данных
    * @param {number} id - Номер мелодии из списка вопросов
    * @param {string} inputName - Имя элемента ввода
    */
-  constructor(melody, id, inputName) {
+  constructor(variant, id, inputName, resources) {
     super();
-    this.melody = melody;
     this.id = id;
     this.inputName = inputName;
-    this.player = new PlayerView(melody.src).element;
+    this.player = new PlayerView(resources.get(variant.src)).element;
   }
 
   get template() {

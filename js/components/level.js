@@ -17,10 +17,12 @@ export default class LevelView extends AbstractView {
   /** @constructor
    * @param {Object} question - Текущий вопрос
    * @param {string} progress - Показатель прогресса
+   * @param {Array} resources - Загруженные ресурсы
    */
-  constructor(question, progress) {
+  constructor(question, progress, resources) {
     super();
     this.question = question;
+    this.resources = resources;
     this.progress = progress;
     this._nowPlaying = null;
   }
@@ -68,9 +70,13 @@ export default class LevelView extends AbstractView {
   bind() {
     const form = this.element.querySelector(`form`);
     const variants = Array.from(this.question.variants);
+    const loadedData = this.resources;
     const answerList = document.createDocumentFragment();
     variants.forEach((variant, id) => {
-      answerList.appendChild(this.question.type === QuestionType.ARTIST ? new ArtistAnswerView(variant, id, INPUT_NAME).element : new GenreAnswerView(variant, id, INPUT_NAME).element);
+      answerList.appendChild(this.question.type === QuestionType.ARTIST ?
+        new ArtistAnswerView(variant, id, INPUT_NAME, loadedData).element
+        :
+        new GenreAnswerView(variant, id, INPUT_NAME, loadedData).element);
     });
 
     form.insertBefore(answerList, form.firstChild);
@@ -78,7 +84,8 @@ export default class LevelView extends AbstractView {
     const inputs = Array.from(form[INPUT_NAME]);
 
     if (this.question.type === QuestionType.ARTIST) {
-      const player = new PlayerView(this.question.melody, `autoplay`).element;
+      // const player = new PlayerView(this.question.melody, `autoplay`).element;
+      const player = new PlayerView(loadedData.get(this.question.melody), `autoplay`).element;
       this.element.insertBefore(player, form);
 
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
