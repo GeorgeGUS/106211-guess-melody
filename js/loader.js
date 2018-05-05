@@ -6,6 +6,11 @@ export const QuestionType = {
   GENRE: `genre`
 };
 
+export const SourseType = {
+  AUDIO: `src`,
+  IMAGE: `url`
+};
+
 const checkResponseStatus = (response) => {
   if (response.ok) {
     return response;
@@ -49,12 +54,51 @@ const adaptData = (data) => {
   });
 };
 
+const getUrlsByType = (data, type) => {
+  return JSON.stringify(data).match(new RegExp(`"${type}":".+?"`, `g`))
+      .map((it) => JSON.parse(`{${it}}`)[type]);
+};
+
+const preloadSong = (src) => {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    try {
+      audio.addEventListener(`canplaythrough`, resolve);
+    } catch (e) {
+      reject(e);
+    }
+
+    audio.src = src;
+    audio.load();
+  });
+};
+
+const preloadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    try {
+      image.addEventListener(`load`, resolve);
+    } catch (e) {
+      reject(e);
+    }
+    image.src = src;
+  });
+};
+
 export default class Loader {
   static async loadData() {
     const response = await fetch(`${SERVER_URL}/questions`);
     checkResponseStatus(response);
     const responseData = await response.json();
     return adaptData(responseData);
+  }
+
+  static async preloadResources(data) {
+    const songs = getUrlsByType(data, SourseType.AUDIO).map((src) => preloadSong(src));
+    const images = getUrlsByType(data, SourseType.IMAGE).map((src) => preloadImage(src));
+    const elements = [...songs, ...images];
+    // console.log(elements);
+    return await Promise.all(elements);
   }
 
   static async loadStats() {

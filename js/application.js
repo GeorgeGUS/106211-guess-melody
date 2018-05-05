@@ -22,7 +22,9 @@ export default class Application {
   static async start() {
     try {
       Application.showLoading();
-      Application.showWelcome(await Loader.loadData());
+      const data = await Loader.loadData();
+      const resources = Loader.preloadResources(data);
+      Application.showWelcome({data, resources});
     } catch (e) {
       Application.showError(e);
     }
@@ -30,12 +32,13 @@ export default class Application {
 
   static showWelcome(data) {
     questions = data;
+    console.log(questions);
     const welcome = new WelcomeScreen();
     showScreen(welcome.element);
   }
 
   static showGame() {
-    const gameScreen = new GameScreen(new GameModel(questions));
+    const gameScreen = new GameScreen(new GameModel(questions.data));
     showScreen(gameScreen.element);
     gameScreen.startGame();
   }
