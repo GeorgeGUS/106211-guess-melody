@@ -24,6 +24,7 @@ const checkResponseStatus = (response) => {
 };
 
 const adaptData = (data) => {
+  console.log(data);
   return data.map((question) => {
     let adapted;
     if (question.type === QuestionType.ARTIST) {
@@ -62,8 +63,25 @@ const getUrlsByType = (data, type) => {
   for (const it of sortedUrls) {
     urls.add(JSON.parse(`{${it}}`)[type]);
   }
+  console.log(Array.from(urls));
   return Array.from(urls);
 };
+
+// const getUrlsByType = (data, types) => {
+//   const sortedUrls = [];
+//   for (const type of types) {
+//     sortedUrls.push(
+//       JSON.stringify(data)
+//         .match(new RegExp(`"${type}":".+?"`, `g`))
+//         .map((it) => JSON.parse(`{${it}}`)[type])
+//     );
+//   }
+//   // const uniqueUrls = new Set();
+//   // for (const it of sortedUrls) {
+//   //   uniqueUrls.add(it);
+//   // }
+//   return Array.from(sortedUrls);
+// };
 
 export default class Loader {
   static async loadData() {

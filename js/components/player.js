@@ -1,27 +1,20 @@
 import AbstractView from "../abstract-view";
+import LevelView from "./level";
 
 /**
  * Шаблон музыкального плеера
  */
 export default class PlayerView extends AbstractView {
-  /** @constructor
-   * @param {HTMLElement} audio - мелодия для воспроизведения
-   * @param {string} [attrs] - дополнительные атрибуты аудио, например autoplay
-   */
-  constructor(audio, attrs = ``) {
+  constructor(audio) {
     super();
     this.audio = audio;
-    console.dir(audio);
-    console.log(audio);
-    this.attrs = attrs;
-    this._canPlay = false;
+    this._playPromise = null;
   }
 
   get template() {
     return `
     <div class="player-wrapper">
       <div class="player">
-        <!--audio-->
         <button class="player-control player-control--play"></button>
         <div class="player-track">
           <span class="player-status"></span>
@@ -29,16 +22,37 @@ export default class PlayerView extends AbstractView {
       </div>
     </div>`;
   }
-  // <audio ${this.attrs} preload="auto">
-  //     <source src="${this.melody}" type="audio/mpeg">
-  // </audio>
+
+  async play() {
+    LevelView.setNowPlaying(this.audio);
+    this._curAudio = LevelView.getNowPlaying();
+    this._playPromise = await this._curAudio.play();
+  }
+
+  pause() {
+    if (!this._playPromise && this._curAudio) {
+      this._curAudio.pause();
+    }
+  }
+
+  stop() {
+    this._curAudio.pause();
+    this._curAudio.currentTime = 0;
+  }
+
+  toggle() {
+    if (this._curAudio && this._curAudio !== this.audio) {
+      this.stop();
+      if (this._playerBtn.classList.contains(`player-control--pause`)) {
+        this._playerBtn.classList.remove(`player-control--pause`);
+        this._playerBtn.classList.add(`player-control--play`);
+      }
+    }
+    this._curAudio = this.audio;
+  }
 
   bind() {
-    const player = this.element.querySelector(`.player`);
-    player.appendChild(this.audio);
-    // const audio = player.insertAdjacentElement(`afterbegin`, this.audio);
-    const audio = this.element.querySelector(`audio`);
-    const playerBtn = this.element.querySelector(`.player-control`);
+    this._playerBtn = this.element.querySelector(`.player-control`);
 
     /**
      * Обработчик нажатия кнопки воспроизведения/паузы
@@ -46,10 +60,10 @@ export default class PlayerView extends AbstractView {
      */
     const playerBtnHolder = (evt) => {
       evt.preventDefault();
-      if (audio.paused && this._canPlay) {
-        audio.play();
+      if (this.audio.paused) {
+        this.play();
       } else {
-        audio.pause();
+        this.pause();
       }
       const btn = evt.target;
       if (btn.classList.contains(`player-control--pause`)) {
@@ -58,24 +72,20 @@ export default class PlayerView extends AbstractView {
       }
     };
 
-    const onCanPlay = () => {
-      this._canPlay = true;
-    };
     /**
      * Меняет внешний вид кнопки на паузу, если музыка играет
      */
     const togglePlayerBtnOnPlaying = () => {
-      playerBtn.classList.toggle(`player-control--play`);
-      playerBtn.classList.toggle(`player-control--pause`);
+      this._playerBtn.classList.toggle(`player-control--play`);
+      this._playerBtn.classList.toggle(`player-control--pause`);
     };
     const togglePlayerBtnOnEnded = () => {
-      playerBtn.classList.remove(`player-control--pause`);
-      playerBtn.classList.add(`player-control--play`);
+      this._playerBtn.classList.remove(`player-control--pause`);
+      this._playerBtn.classList.add(`player-control--play`);
     };
 
-    audio.addEventListener(`canplay`, onCanPlay);
-    audio.addEventListener(`playing`, togglePlayerBtnOnPlaying);
-    audio.addEventListener(`ended`, togglePlayerBtnOnEnded);
-    playerBtn.addEventListener(`click`, playerBtnHolder);
+    // this.audio.addEventListener(`playing`, togglePlayerBtnOnPlaying);
+    // this.audio.addEventListener(`ended`, togglePlayerBtnOnEnded);
+    this._playerBtn.addEventListener(`click`, playerBtnHolder);
   }
 }

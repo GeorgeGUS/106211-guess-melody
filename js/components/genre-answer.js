@@ -9,12 +9,13 @@ export default class GenreAnswerView extends AbstractView {
    * @param {Object} variant - Массив мелодий из данных
    * @param {number} id - Номер мелодии из списка вопросов
    * @param {string} inputName - Имя элемента ввода
+   * @param {Array} resources - Массив кэшированных ресурсов
    */
   constructor(variant, id, inputName, resources) {
     super();
     this.id = id;
     this.inputName = inputName;
-    this.player = new PlayerView(resources.get(variant.src)).element;
+    this.player = new PlayerView(resources.get(variant.src));
   }
 
   get template() {
@@ -26,7 +27,14 @@ export default class GenreAnswerView extends AbstractView {
     </div>`;
   }
 
+  stop() {
+    this.player.stop();
+  }
+
   bind() {
-    this.element.insertAdjacentElement(`afterbegin`, this.player);
+    this.element.insertAdjacentElement(`afterbegin`, this.player.element);
+    if (this.id === 0) {
+      this.player.play();
+    }
   }
 }

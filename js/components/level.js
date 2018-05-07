@@ -7,6 +7,8 @@ import {QuestionType} from "../loader";
 /** @const INPUT_NAME - Имя поля для идентификации */
 const INPUT_NAME = `answer`;
 
+let nowPlaying = null;
+
 /**
  * Шаблон экрана уровня игры с текущим вопросом и состоянием игры
  * Имеет два режима в зависимости от типа вопроса:
@@ -24,7 +26,6 @@ export default class LevelView extends AbstractView {
     this.question = question;
     this.resources = resources;
     this.progress = progress;
-    this._nowPlaying = null;
   }
 
   get template() {
@@ -54,29 +55,47 @@ export default class LevelView extends AbstractView {
 
   onLevelLoaded() {}
 
-  togglePlayers(evt) {
-    if (this._nowPlaying && this._nowPlaying !== evt.target) {
-      this._nowPlaying.pause();
-      this._nowPlaying.currentTime = 0;
-      const btn = this._nowPlaying.parentNode.querySelector(`.player-control`);
-      if (btn.classList.contains(`player-control--pause`)) {
-        btn.classList.remove(`player-control--pause`);
-        btn.classList.add(`player-control--play`);
-      }
-    }
-    this._nowPlaying = evt.target;
+  static getNowPlaying() {
+    return nowPlaying;
   }
+
+  static setNowPlaying(audio) {
+    nowPlaying = audio;
+  }
+
+  // static deleteNowPlaying() {
+  //   nowPlaying = null;
+  // }
+
+  // togglePlayers(player) {
+  //   if (this._nowPlaying && this._nowPlaying !== player.audio) {
+  //     this._nowPlaying.pause();
+  //     this._nowPlaying.currentTime = 0;
+  //     const btn = player.querySelector(`.player-control`);
+  //     if (btn.classList.contains(`player-control--pause`)) {
+  //       btn.classList.remove(`player-control--pause`);
+  //       btn.classList.add(`player-control--play`);
+  //     }
+  //   }
+  //   this._nowPlaying = player.audio;
+  // }
 
   bind() {
     const form = this.element.querySelector(`form`);
     const variants = Array.from(this.question.variants);
     const loadedData = this.resources;
+    const genreAnswers = [];
     const answerList = document.createDocumentFragment();
     variants.forEach((variant, id) => {
-      answerList.appendChild(this.question.type === QuestionType.ARTIST ?
-        new ArtistAnswerView(variant, id, INPUT_NAME, loadedData).element
-        :
-        new GenreAnswerView(variant, id, INPUT_NAME, loadedData).element);
+      let answer;
+      if (this.question.type === QuestionType.ARTIST) {
+        answer = new ArtistAnswerView(variant, id, INPUT_NAME, loadedData);
+      } else {
+        genreAnswers.push(new GenreAnswerView(variant, id, INPUT_NAME, loadedData));
+        answer = new GenreAnswerView(variant, id, INPUT_NAME, loadedData);
+      }
+      console.log(answer);
+      answerList.appendChild(answer.element);
     });
 
     form.insertBefore(answerList, form.firstChild);
@@ -84,27 +103,27 @@ export default class LevelView extends AbstractView {
     const inputs = Array.from(form[INPUT_NAME]);
 
     if (this.question.type === QuestionType.ARTIST) {
-      // const player = new PlayerView(this.question.melody, `autoplay`).element;
-      const player = new PlayerView(loadedData.get(this.question.melody), `autoplay`).element;
-      this.element.insertBefore(player, form);
+
+      const player = new PlayerView(loadedData.get(this.question.melody));
+      this.element.insertBefore(player.element, form);
+      player.play();
 
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
         evt.preventDefault();
+        player.stop();
         const answer = Number(evt.target.value);
         this.onAnswer(this.question, answer);
       }));
 
     } else if (this.question.type === QuestionType.GENRE) {
-      const firstPlayer = form.firstChild;
-      firstPlayer.querySelector(`audio`).setAttribute(`autoplay`, ``);
       inputs.forEach((input) => input.addEventListener(`change`, (evt) => {
         evt.preventDefault();
         form.querySelector(`.genre-answer-send`).disabled = !inputs.some((answer) => answer.checked);
       }));
 
-      form.addEventListener(`playing`, this.togglePlayers, true);
       form.addEventListener(`submit`, (evt) => {
         evt.preventDefault();
+        genreAnswers.forEach((player) => player.stop());
         const answer = inputs.filter((i) => i.checked).map((i) => Number(i.value));
         this.onAnswer(this.question, answer);
       });

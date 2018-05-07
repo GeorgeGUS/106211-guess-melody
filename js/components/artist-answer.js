@@ -8,6 +8,7 @@ export default class ArtistAnswerView extends AbstractView {
    * @param {Object} variant - один из вариантов текущего вопроса
    * @param {number} id - Номер мелодии из списка вопросов
    * @param {string} inputName - Имя элемента ввода
+   * @param {Array} resources - Массив кэшированных ресурсов
    */
   constructor(variant, id, inputName, resources) {
     super();
