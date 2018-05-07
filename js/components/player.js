@@ -12,7 +12,6 @@ export default class PlayerView extends AbstractView {
     super();
     this.melody = melody;
     this.attrs = attrs;
-    this._canPlay = false;
   }
 
   get template() {
@@ -40,8 +39,8 @@ export default class PlayerView extends AbstractView {
      */
     const playerBtnHolder = (evt) => {
       evt.preventDefault();
-      if (audio.paused && this._canPlay) {
-        audio.play();
+      if (audio.paused) {
+        audio.play().catch(() => {});
       } else {
         audio.pause();
       }
@@ -52,9 +51,6 @@ export default class PlayerView extends AbstractView {
       }
     };
 
-    const onCanPlay = () => {
-      this._canPlay = true;
-    };
     /**
      * Меняет внешний вид кнопки на паузу, если музыка играет
      */
@@ -67,7 +63,6 @@ export default class PlayerView extends AbstractView {
       playerBtn.classList.add(`player-control--play`);
     };
 
-    audio.addEventListener(`canplay`, onCanPlay);
     audio.addEventListener(`playing`, togglePlayerBtnOnPlaying);
     audio.addEventListener(`ended`, togglePlayerBtnOnEnded);
     playerBtn.addEventListener(`click`, playerBtnHolder);
